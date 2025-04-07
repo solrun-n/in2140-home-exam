@@ -67,6 +67,7 @@ struct L2SAP
 };
 
 struct L2SAP* l2sap_server_create( int port );
+struct L2Header l2sap_addheader(struct sockaddr_in addr, int len) ;
 
 L2SAP* l2sap_create( const char* server_ip, int server_port );
 void l2sap_destroy( L2SAP* client );
