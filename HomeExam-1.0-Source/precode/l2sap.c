@@ -10,8 +10,14 @@
  * l2_recvfrom_timeout to compute the 1-byte checksum both
  * on sending and receiving and L2 frame.
  */
-static uint8_t compute_checksum( const uint8_t* frame, int len );
+static uint8_t compute_checksum( const uint8_t* frame, int len ) {
 
+    uint8_t checksum = 0;
+    for (int i = 0; i < len; i++) {
+        checksum ^= frame[i]; // XOR-operasjon
+    }
+    return checksum;
+}
 
 
 L2SAP* l2sap_create( const char* server_ip, int server_port )
@@ -27,15 +33,20 @@ L2SAP* l2sap_create( const char* server_ip, int server_port )
     L2SAP* l2sap = malloc(sizeof(struct L2SAP));
     if (l2sap == NULL) {
         perror("Error mallocing L2SAP");
-        free(l2sap);
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     // Initialiserer struct sockaddr_in som skal inn i l2sap
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
     addr.sin_port = htons(server_port);
-    addr.sin_addr.s_addr = inet_pton(AF_INET, server_ip, &addr);
+
+    int check = inet_pton(AF_INET, server_ip, &addr.sin_addr);
+    if (check != 1) {
+        perror("Couldn't convert to network address structure");
+        free(l2sap);
+        exit(EXIT_FAILURE);
+    }
 
     // Tilordner variablene til socket (FD + adressen)
     l2sap->socket = socketFD;
@@ -63,21 +74,63 @@ void l2sap_destroy(L2SAP* client)
 
 // sockaddr_in - tar inn AF_INET, portnummer, IPv4-adresse
 
-// sendto skal bruke en socket for å 
+// sendto tar inn: socket file descriptor fra client,
+// et buffer som skal skrives til (størrelse L2Payloadsize)
+
+
 
 int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
 {
 
+    // Hvis datamengden er for stor
+    if (len + L2Headersize > L2Framesize) {
+        perror("Data exceeds frame size");
+        return -1;
+    }
+
+    int socketFD = client->socket;
     struct sockaddr_in reciever = client->peer_addr;
 
-    inet_pton(AF_INET, reciever.sin_addr, &reciever);
+    // Kaller på hjelpefunksjon for å opprette header
+    struct L2Header* header = malloc(L2Headersize);
+    if (header == NULL) {
+        perror("Failed to allocate memory");
+        return -1;
+    } 
+
+    header->dst_addr = reciever.sin_addr.s_addr;
+    header->len = (uint16_t)len;
+
+    // Setter foreløpig checksum til 0
+    header->checksum = 0;
+    header->mbz = 0;
+
+    // Oppretter buffer (for hele rammen)
+    int bufsize = L2Headersize + len;
+    uint8_t* buffer = malloc(bufsize);
+    if (buffer == NULL) {
+        free(header);
+        perror("Error mallocing space for buffer");
+        return -1;
+    }
+
+    // Legger header og payload inn i buffer
+    memcpy(buffer, header, L2Headersize);
+    memcpy(buffer+L2Headersize, data, len);
+
+    // Kaller på hjelpefunksjon for å sette checksum
+    uint8_t cs = compute_checksum(buffer, bufsize);
+    header->checksum = cs;
+
+    memcpy(buffer, header, L2Headersize);
 
 
-
-
-    fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
-    return -1;
+    // Sender melding
+    sendto(socketFD, data, len, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
+    return 1;
 }
+
+
 
 /* Convenience function. Calls l2sap_recvfrom_timeout with NULL timeout
  * to make it waits endlessly.
