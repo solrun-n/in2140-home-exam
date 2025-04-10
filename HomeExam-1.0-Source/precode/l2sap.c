@@ -102,7 +102,7 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     } 
 
     header->dst_addr = reciever.sin_addr.s_addr;
-    header->len = htons((uint16_t)len);
+    header->len = htons((uint16_t)len + sizeof(L2Header));
 
     // Setter foreløpig checksum til 0
     header->checksum = 0;
@@ -122,6 +122,7 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     memcpy(buffer+L2Headersize, data, len);
 
     // Kaller på hjelpefunksjon for å sette checksum
+    // Checksum skal utregnes fra dataen, uten headeren (len bytes)
     uint8_t cs = compute_checksum(buffer, bufsize);
     header->checksum = cs;
 
@@ -129,6 +130,10 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
 
     // Sender melding (sender med hele bufferet, inkludert header)
     sendto(socketFD, buffer, bufsize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
+
+    // Frigjør minne 
+    free(header);
+    free(buffer);
 
     return 1;
 }
@@ -164,8 +169,6 @@ int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
 int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
 {
 
-
-
     // Nullstiller variabel som skal holde på file descriptor
     // og henter riktig FD fra klienten
     fd_set fds;
@@ -179,29 +182,39 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
     // exceptfds - venter på feil ?
     // Her skal vi bare lese 
     int check_activity = select(client->socket + 1, &fds, NULL, NULL, timeout);
-    printf("Check_activity: %d\n", check_activity);
     if (check_activity < 0) {
         perror("An error occured in select");
         return -1;
     } else if (check_activity == 0) {
         perror("Timeout");
-        printf("Det ble timeout");
         return L2_TIMEOUT;
 
     // Hvis data er sendt og mottatt innen timeout-tid:
     } else {
-
-        // Må sjekke header - riktig lengde, checksum, mbz = 0
-        if ()
-        
-
 
         // Lagrer adressestørrelse (for parameter)
         socklen_t address_length = sizeof(client->peer_addr);
 
         // recvfrom() tar inn fd, databuffer, lengde, ant flagg (0),
         // adressen til avsender og adressestørrelse
-        recvfrom(client->socket, data, len, 0, (struct sockaddr*) &client->peer_addr, &address_length);
+        // Den returnerer en int som er rammestørrelsen (må være minimum L2Headersize)
+        int recv_len = recvfrom(client->socket, data, len, 0, (struct sockaddr*) &client->peer_addr, &address_length);
+
+        if (recv_len < L2Headersize) {
+            perror("Frame too short");
+            return -1;
+        }
+
+        // recv_cs = mottatt checksum fra frame
+        // correct_cs = kalkulert checksum basert på frame
+        uint8_t recv_cs = data[L2Headersize-2];
+        data[L2Headersize-2] = 0; // Setter checksum til 0 før beregning
+
+        uint8_t correct_cs = compute_checksum(data, recv_len);
+        if (recv_cs != correct_cs) {
+            perror("Checksum not correct");
+            return -1;
+        }
 
         // Fjerne headeren 
         // Oppdaterer pointer til å peke på data etter header
