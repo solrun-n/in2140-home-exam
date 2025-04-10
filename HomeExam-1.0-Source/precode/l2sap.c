@@ -125,8 +125,9 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     memcpy(buffer, header, L2Headersize);
 
 
-    // Sender melding
-    sendto(socketFD, data, len, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
+    // Sender melding (sender med hele bufferet, inkludert header)
+    sendto(socketFD, buffer, bufsize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
+
     return 1;
 }
 
@@ -155,9 +156,48 @@ int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
  * which has the value 0.
  * It returns -1 in case of error.
  */
+
+ // Her brukes select() for å overvåke endringer på sockets
+
 int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
 {
-    fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
-    return -1;
+
+    // Nullstiller variabel som skal holde på file descriptor
+    // og henter riktig FD fra klienten
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(client->socket, &fds);
+
+    // select()
+    // nfds - FD-nummer som skal leses til
+    // readfds - venter på å lese til
+    // writefds - venter på å skrive til
+    // exceptfds - venter på feil ?
+    // Her skal vi bare lese 
+    int check_activity = select(client->socket + 1, &fds, NULL, NULL, timeout);
+    if (check_activity < 0) {
+        perror("An error occured in select");
+        return -1;
+    } else if (check_activity == 0) {
+        perror("Timeout");
+        return L2_TIMEOUT;
+
+    // Hvis data er sendt og mottatt innen timeout-tid:
+    } else {
+
+        // Lagrer adressestørrelse (for parameter)
+        socklen_t address_length = sizeof(client->peer_addr);
+
+        // recvfrom() tar inn fd, databuffer, lengde, ant flagg (0),
+        // adressen til avsender og adressestørrelse
+        recvfrom(client->socket, data, len, 0, (struct sockaddr*) &client->peer_addr, &address_length);
+
+        // Fjerne headeren 
+        // Oppdaterer pointer til å peke på data etter header
+        uint8_t* payload = data + L2Headersize;
+        memcpy(data, payload, len - L2Headersize);
+
+        return len;
+    }
 }
 
