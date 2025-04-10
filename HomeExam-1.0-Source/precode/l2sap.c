@@ -41,6 +41,7 @@ L2SAP* l2sap_create( const char* server_ip, int server_port )
     addr.sin_family = AF_INET;
     addr.sin_port = htons(server_port);
 
+
     int check = inet_pton(AF_INET, server_ip, &addr.sin_addr);
     if (check != 1) {
         perror("Couldn't convert to network address structure");
@@ -56,7 +57,9 @@ L2SAP* l2sap_create( const char* server_ip, int server_port )
 
 void l2sap_destroy(L2SAP* client)
 {
-    fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
+    // Lukker socket og frigjør ressursene
+    close(client->socket);
+    free(client);
 }
 
 /* l2sap_sendto sends data over UDP, using the given UDP socket
@@ -99,7 +102,7 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     } 
 
     header->dst_addr = reciever.sin_addr.s_addr;
-    header->len = (uint16_t)len;
+    header->len = htons((uint16_t)len);
 
     // Setter foreløpig checksum til 0
     header->checksum = 0;
@@ -123,7 +126,6 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     header->checksum = cs;
 
     memcpy(buffer, header, L2Headersize);
-
 
     // Sender melding (sender med hele bufferet, inkludert header)
     sendto(socketFD, buffer, bufsize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
@@ -162,6 +164,8 @@ int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
 int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
 {
 
+
+
     // Nullstiller variabel som skal holde på file descriptor
     // og henter riktig FD fra klienten
     fd_set fds;
@@ -175,15 +179,22 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
     // exceptfds - venter på feil ?
     // Her skal vi bare lese 
     int check_activity = select(client->socket + 1, &fds, NULL, NULL, timeout);
+    printf("Check_activity: %d\n", check_activity);
     if (check_activity < 0) {
         perror("An error occured in select");
         return -1;
     } else if (check_activity == 0) {
         perror("Timeout");
+        printf("Det ble timeout");
         return L2_TIMEOUT;
 
     // Hvis data er sendt og mottatt innen timeout-tid:
     } else {
+
+        // Må sjekke header - riktig lengde, checksum, mbz = 0
+        if ()
+        
+
 
         // Lagrer adressestørrelse (for parameter)
         socklen_t address_length = sizeof(client->peer_addr);
