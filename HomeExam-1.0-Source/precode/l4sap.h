@@ -89,9 +89,14 @@ typedef struct L4SAP L4SAP;
  */
 
  // Trenger en referanse til L2SAP
+ // Holder midlertidige referanser til ack og seq for å vite
+ // Bruker en timeval for å time pakker
 struct L4SAP
 {
     struct L2SAP* l2sap;
+    uint8_t current_ack;
+    uint8_t current_seq;
+    //struct timeval* timeout;
 };
 
 

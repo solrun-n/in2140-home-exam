@@ -26,8 +26,10 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
     // Oppretter en L2-klient som legges inn i L4-klienten
     L2SAP* l2 = l2sap_create(server_ip, server_port);
     l4sap->l2sap = l2;
+    l4sap->current_ack = 0;
+    l4sap->current_seq = 0;
 
-    // Hva annet skal vi ha her?
+    // Timeout osv 
 
     return l4sap;
 }
@@ -53,8 +55,59 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
  * - L4_QUIT if the peer entity has sent an L4_RESET packet.
  * - another value < 0 if an error occurred.
  */
+
+
+
+ // Hjelpefunksjon for å oppdatere seq/ack
+ uint8_t update(uint8_t bit) {
+    return if (bit == 0) 1 else 0;
+ }
+
+
+
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 {
+
+    // Sjekker at datamengden ikke er for stor
+    // Hvis datamengden er for stor
+    if (len > L4Payloadsize) {
+
+        // må kutte ned på pakken
+    }
+
+    // data: kun payload som skal sendes
+
+    // Hvis seq og ack-nr vi er på nå er like, øker vi seq
+    if (l4->current_seq == l4->current_ack) {
+        l4->current_seq = update(current_seq);
+    }
+
+    uint8_t seq = l4->current_seq;
+
+    // Oppretter L4-header
+    
+
+
+
+    struct L2SAP* l2sap = l4->l2sap;
+
+
+
+    // For å kunne sende en pakke:
+    // 
+
+
+
+
+
+
+    // Første gang: seq er 0
+    // om vi mottar ack 0, kan vi øke seq til 1
+    // om vi mottar en ack 1 mens seq er 0 vet vi at noe har gått GÆLI
+
+    // ved korrekt ack: oppdaterer seq og returnerer
+
+
     fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
     return L4_QUIT;
 }
@@ -72,6 +125,15 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
  */
 int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 {
+
+    // Her må ack og seq være ulike eller noe sånt
+    // Fra headeren
+    uint8_t type = data[0];
+    uint8_t seq = data[1]
+    uint8_t ack = data[2];
+
+
+
     fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
     return L4_QUIT;
 }

@@ -86,6 +86,7 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
 {
 
     // Hvis datamengden er for stor
+    // TODO: sjekk lengde vs payload
     if (len + L2Headersize > L2Framesize) {
         perror("Data exceeds frame size");
         return -1;
@@ -108,32 +109,33 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     header->checksum = 0;
     header->mbz = 0;
 
-    // Oppretter buffer (for hele rammen)
-    int bufsize = L2Headersize + len;
-    uint8_t* buffer = malloc(bufsize);
-    if (buffer == NULL) {
+    // Oppretter en frame (buffer for header + data)
+    int framesize = L2Headersize + len;
+    uint8_t* frame = malloc(framesize);
+    if (frame == NULL) {
         free(header);
         perror("Error mallocing space for buffer");
         return -1;
     }
 
     // Legger header og payload inn i buffer
-    memcpy(buffer, header, L2Headersize);
-    memcpy(buffer+L2Headersize, data, len);
+    memcpy(frame, header, L2Headersize);
+    memcpy(frame+L2Headersize, data, len);
 
     // Kaller på hjelpefunksjon for å sette checksum
-    // Checksum skal utregnes fra dataen, uten headeren (len bytes)
-    uint8_t cs = compute_checksum(buffer, bufsize);
+    // Checksum beregnes ut fra hele rammen 
+    // men dette burde egentlig bare vært uregnet fra data?
+    uint8_t cs = compute_checksum(frame, framesize);
     header->checksum = cs;
 
-    memcpy(buffer, header, L2Headersize);
+    memcpy(frame, header, L2Headersize);
 
     // Sender melding (sender med hele bufferet, inkludert header)
-    sendto(socketFD, buffer, bufsize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
+    sendto(socketFD, frame, framesize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
 
     // Frigjør minne 
     free(header);
-    free(buffer);
+    free(frame);
 
     return 1;
 }
@@ -168,6 +170,8 @@ int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
 
 int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
 {
+
+    printf("Vår metode\n");
 
     // Nullstiller variabel som skal holde på file descriptor
     // og henter riktig FD fra klienten
