@@ -87,11 +87,11 @@ typedef struct L4SAP L4SAP;
  * manage your L4 entity. It is very likely that it contains a pointer to
  * L2SAP that you are using, but the actual content is your choice,.
  */
+
+ // Trenger en referanse til L2SAP
 struct L4SAP
 {
-    /*
-     * Your choice.
-     */
+    struct L2SAP* l2sap;
 };
 
 

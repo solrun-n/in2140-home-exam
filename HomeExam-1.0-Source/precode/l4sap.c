@@ -15,8 +15,21 @@
  */
 L4SAP* l4sap_create( const char* server_ip, int server_port )
 {
-    fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
-    return NULL;
+
+    // Må allokere minne for L4SAP
+    L4SAP* l4sap = malloc(sizeof(struct L4SAP));
+    if (l4sap == NULL) {
+        perror("Error mallocing L4SAP");
+        exit(EXIT_FAILURE);
+    }
+
+    // Oppretter en L2-klient som legges inn i L4-klienten
+    L2SAP* l2 = l2sap_create(server_ip, server_port);
+    l4sap->l2sap = l2;
+
+    // Hva annet skal vi ha her?
+
+    return l4sap;
 }
 
 /* The functions sends a packet to the network. The packet's payload
