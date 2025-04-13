@@ -26,8 +26,8 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
     // Oppretter en L2-klient som legges inn i L4-klienten
     L2SAP* l2 = l2sap_create(server_ip, server_port);
     l4sap->l2sap = l2;
-    l4sap->current_ack = 0;
     l4sap->current_seq = 0;
+    l4sap->current_ack = 0;
 
     // Timeout osv 
 
@@ -57,25 +57,56 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
  */
 
 
-
  // Hjelpefunksjon for å oppdatere seq/ack
  uint8_t update(uint8_t bit) {
     return if (bit == 0) 1 else 0;
  }
 
 
-
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 {
-
-    // Sjekker at datamengden ikke er for stor
-    // Hvis datamengden er for stor
+    
+    // Kutter pakken om datamengden er for stor
+    // Her oppdaterer vi kun lengden, fordi memcpy brukes senere
+    // for å faktisk sende pakken, og da definerer vi lengden med len
     if (len > L4Payloadsize) {
-
-        // må kutte ned på pakken
+        len = L4Payloadsize
     }
 
-    // data: kun payload som skal sendes
+    // Oppretter en L4 header
+    struct L4Header* header = malloc(L4Headersize);
+    if (header == NULL) {
+        perror("Failed to allocate memory");
+        return -1;
+    } 
+
+    // Fyller inn headeren
+    header->type = L4_DATA; // Klienten sender alltid data
+    header->seqno = l4->current_seq; // Nåværende sekvensnr legges inn 
+    header->ackno = l4->current_ack; // Forventet ack = seq
+    header->mbz = 0;
+
+    // Hvis current_seq == current_ack er pakken klar til å sendes
+    if (l4->current_seq == l4->current_ack) {
+        // Send pakke
+    }
+
+
+    // Forsøker avsending av pakke maks 4 ganger
+    uint8_t max = 4;
+    uint8_t attempt = 0;
+
+    while (attempt < max) {
+
+        // Send pakke
+        // Vent på ack
+
+        // Sjekk ack
+
+    }
+
+
+
 
     // Hvis seq og ack-nr vi er på nå er like, øker vi seq
     if (l4->current_seq == l4->current_ack) {

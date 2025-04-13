@@ -171,8 +171,6 @@ int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
 int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
 {
 
-    printf("Vår metode\n");
-
     // Nullstiller variabel som skal holde på file descriptor
     // og henter riktig FD fra klienten
     fd_set fds;

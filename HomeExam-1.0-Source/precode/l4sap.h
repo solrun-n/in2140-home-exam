@@ -94,8 +94,8 @@ typedef struct L4SAP L4SAP;
 struct L4SAP
 {
     struct L2SAP* l2sap;
-    uint8_t current_ack;
-    uint8_t current_seq;
+    uint8_t current_seq; // seq for neste pakke som skal sendes
+    uint8_t current_ack; // ack man venter på
     //struct timeval* timeout;
 };
 
