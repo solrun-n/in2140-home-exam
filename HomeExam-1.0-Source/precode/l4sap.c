@@ -26,10 +26,13 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
     // Oppretter en L2-klient som legges inn i L4-klienten
     L2SAP* l2 = l2sap_create(server_ip, server_port);
     l4sap->l2sap = l2;
-    l4sap->current_seq = 0;
-    l4sap->current_ack = 0;
 
-    // Timeout osv 
+    // Fyller ut feltene
+    l4sap->current_seq = 0;
+    l4sap->reset = 0; 
+    
+    l4sap->timeout.tv_sec = 1;
+    l4sap->timeout.tv_usec = 0;
 
     return l4sap;
 }
@@ -57,12 +60,6 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
  */
 
 
- // Hjelpefunksjon for å oppdatere seq/ack
- uint8_t update(uint8_t bit) {
-    return if (bit == 0) 1 else 0;
- }
-
-
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 {
     
@@ -70,10 +67,11 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
     // Her oppdaterer vi kun lengden, fordi memcpy brukes senere
     // for å faktisk sende pakken, og da definerer vi lengden med len
     if (len > L4Payloadsize) {
-        len = L4Payloadsize
+        len = L4Payloadsize;
     }
 
     // Oppretter en L4 header
+    // Sjekk om vi kan unngå å allokere header
     struct L4Header* header = malloc(L4Headersize);
     if (header == NULL) {
         perror("Failed to allocate memory");
@@ -81,66 +79,80 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
     } 
 
     // Fyller inn headeren
-    header->type = L4_DATA; // Klienten sender alltid data
+
+    // Klienten sender alltid data, med mindre serveren har sendt en reset
+    if (l4->reset) {
+        header->type = L4_QUIT;
+    } else header->type = L4_DATA;
+
     header->seqno = l4->current_seq; // Nåværende sekvensnr legges inn 
-    header->ackno = l4->current_ack; // Forventet ack = seq
+    header->ackno = l4->current_seq; // Forventet ack = seq
     header->mbz = 0;
 
-    // Hvis current_seq == current_ack er pakken klar til å sendes
-    if (l4->current_seq == l4->current_ack) {
-        // Send pakke
+    // Legger headeren på en buffer med datapakken
+    uint8_t* packet = malloc(L4Headersize + len);
+    if (packet == NULL) {
+        free(header);
+        perror("Error mallocing space for buffer");
+        return -1;
     }
+    memcpy(packet, header, L4Headersize); // Legger først inn header
+    memcpy(packet+L4Headersize, data, len); // Så datapakken 
+    // her er len oppdatert dersom pakken var for stor, så den overskrider ikke strl
 
-
-    // Forsøker avsending av pakke maks 4 ganger
-    uint8_t max = 4;
-    uint8_t attempt = 0;
-
-    while (attempt < max) {
-
-        // Send pakke
-        // Vent på ack
-
-        // Sjekk ack
-
-    }
-
-
-
-
-    // Hvis seq og ack-nr vi er på nå er like, øker vi seq
-    if (l4->current_seq == l4->current_ack) {
-        l4->current_seq = update(current_seq);
-    }
-
-    uint8_t seq = l4->current_seq;
-
-    // Oppretter L4-header
     
+    // Forsøker avsending av pakke maks 4 ganger
+    int result = L4_SEND_FAILED;
+    uint8_t attempt = 1;
+
+    while (attempt <= 4) {
+
+        // Sender pakken via L2
+        int send = l2sap_sendto(l4->l2sap, packet, len);
+        if (send != 1) {
+            perror("Error sending frame from L2");
+            free(header);
+            free(packet);
+            return -1;
+        }
+
+        // Resetter timeout hver runde 
+        l4->timeout.tv_sec = 1;
+        l4->timeout.tv_usec = 0;
 
 
+        // Oppretter et buffer der mottatt data skal legges
+        // og kaller på recieve i L2 for å hente ut ack
+        // L2 legger L4-pakken på bufferet
+        uint8_t buffer[L2Framesize]; 
+        int recieved = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &l4->timeout);
 
-    struct L2SAP* l2sap = l4->l2sap;
+        // En pakke har ankommet
+        if (recieved > 0) {
 
+            // Henter ut header
+            struct L4Header* recv_header = (struct L4Header*)buffer;
 
+            // Her kan mottatt pakke være ACK eller RESET
+            if (recv_header->type == L4_ACK) {
 
-    // For å kunne sende en pakke:
-    // 
+                if (recv_header->ackno == l4->current_seq) {
+                    l4->current_seq ^= 1; // Oppdaterer seq med XOR (flipper 0/1)
+                    result = len;
+                    break;
+                }
 
+            } else if (recv_header->type == L4_RESET) { // Resetter
+                l4->reset = 1;
+                result = L4_QUIT;
+                break;
+            }       
+        } else attempt++; // Ingen pakke, prøv på nytt
+    }
 
-
-
-
-
-    // Første gang: seq er 0
-    // om vi mottar ack 0, kan vi øke seq til 1
-    // om vi mottar en ack 1 mens seq er 0 vet vi at noe har gått GÆLI
-
-    // ved korrekt ack: oppdaterer seq og returnerer
-
-
-    fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
-    return L4_QUIT;
+    free(header); // Frigjøre minne
+    free(packet);
+    return result;
 }
 
 /* The functions receives a packet from the network. The packet's
@@ -154,14 +166,22 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
  * - L4_QUIT if the peer entity has sent an L4_RESET packet.
  * - another value < 0 if an error occurred.
  */
+
+
+ // Ansvaret til denne funksjonen er å motta datapakker
 int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 {
 
-    // Her må ack og seq være ulike eller noe sånt
-    // Fra headeren
-    uint8_t type = data[0];
-    uint8_t seq = data[1]
-    uint8_t ack = data[2];
+    // Henter ut headeren
+    struct L4Header* recv_header = (struct L4Header*)data;
+
+    // Hvis en reset-pakke blir sendt 
+    if (recv_header->type == L4_RESET) {
+        l4->reset = 1;
+        return L4_QUIT;
+    } 
+
+    // Ellers skal klienten bare motta ack?
 
 
 
@@ -177,6 +197,12 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
  */
 void l4sap_destroy( L4SAP* l4 )
 {
-    fprintf( stderr, "%s has not been implemented yet\n", __FUNCTION__ );
+    // Sender L4_RESET 3 ganger (bør kanskje være flere?)
+    for (int i = 0; i < 3; i++) {
+        // Må sende reset her, ikke data (som sendto vanligvis gjør)
+    }
+
+    l2sap_destroy(l4->l2sap);
+    free(l4);
 }
 

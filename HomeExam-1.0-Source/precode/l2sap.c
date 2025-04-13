@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+
 #include "l2sap.h"
 
 /* compute_checksum is a helper function for l2_sendto and
@@ -95,7 +96,7 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     int socketFD = client->socket;
     struct sockaddr_in reciever = client->peer_addr;
 
-    // Kaller på hjelpefunksjon for å opprette header
+    // Sjekk om vi kan unngå å allokere header
     struct L2Header* header = malloc(L2Headersize);
     if (header == NULL) {
         perror("Failed to allocate memory");
@@ -119,6 +120,7 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     }
 
     // Legger header og payload inn i buffer
+    // memcpy parametere: destination, source, n bytes
     memcpy(frame, header, L2Headersize);
     memcpy(frame+L2Headersize, data, len);
 

@@ -95,8 +95,8 @@ struct L4SAP
 {
     struct L2SAP* l2sap;
     uint8_t current_seq; // seq for neste pakke som skal sendes
-    uint8_t current_ack; // ack man venter på
-    //struct timeval* timeout;
+    uint8_t reset; // for å vite om en RESET er sendt (1: true, 0: false)
+    struct timeval timeout;
 };
 
 
