@@ -73,6 +73,8 @@ L2SAP* l2sap_create( const char* server_ip, int server_port );
 void l2sap_destroy( L2SAP* client );
 int  l2sap_sendto( L2SAP* client, const uint8_t* data, int len );
 int  l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout );
+int  l2sap_recvfrom( L2SAP* client, uint8_t* data, int len );
+
 
 #endif
 
