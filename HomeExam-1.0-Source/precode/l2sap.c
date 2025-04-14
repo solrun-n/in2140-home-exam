@@ -86,6 +86,8 @@ void l2sap_destroy(L2SAP* client)
 int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
 {
 
+    printf("Inne i l2_sendto\n");
+
     // Hvis datamengden er for stor
     // TODO: sjekk lengde vs payload
     if (len + L2Headersize > L2Framesize) {
@@ -134,6 +136,8 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
 
     // Sender melding (sender med hele bufferet, inkludert header)
     sendto(socketFD, frame, framesize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
+
+    printf("l2 har kalt på system sendto. sendte %d bytes\n", framesize);
 
     // Frigjør minne 
     free(header);
