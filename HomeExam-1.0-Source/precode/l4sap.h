@@ -94,7 +94,9 @@ typedef struct L4SAP L4SAP;
 struct L4SAP
 {
     struct L2SAP* l2sap;
-    uint8_t current_seq; // seq for neste pakke som skal sendes
+    uint8_t current_seq_send; // seq for neste pakke som skal sendes
+    uint8_t last_seq_received; // forrige mottatte pakke
+    uint8_t last_ack_sent; // forrige ack som ble sendt
     uint8_t reset; // for å vite om en RESET er sendt (1: true, 0: false)
     struct timeval timeout;
 };
