@@ -86,8 +86,6 @@ void l2sap_destroy(L2SAP* client)
 int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
 {
 
-    printf("Inne i l2_sendto\n");
-
     // Hvis datamengden er for stor
     // TODO: sjekk lengde vs payload
     if (len + L2Headersize > L2Framesize) {
@@ -137,8 +135,6 @@ int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
     // Sender melding (sender med hele bufferet, inkludert header)
     sendto(socketFD, frame, framesize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
 
-    printf("l2 har kalt på system sendto. sendte %d bytes\n", framesize);
-
     // Frigjør minne 
     free(header);
     free(frame);
@@ -177,7 +173,6 @@ int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
 int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
 {
 
-    printf("L2 recieve har mottatt %d bytes\n", len);
 
     // Nullstiller variabel som skal holde på file descriptor
     // og henter riktig FD fra klienten
@@ -210,7 +205,6 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
         // Den returnerer en int som er rammestørrelsen (må være minimum L2Headersize)
         int recv_len = recvfrom(client->socket, data, len, 0, (struct sockaddr*) &client->peer_addr, &address_length);
 
-        printf("L2 recieve fra server mottatt %d bytes\n", recv_len);
 
 
         if (recv_len < L2Headersize) {

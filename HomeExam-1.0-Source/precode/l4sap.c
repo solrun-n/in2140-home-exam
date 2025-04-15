@@ -63,13 +63,11 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 {
 
-    printf("----L4 SEND CALLED----\n");
     
     // Kutter pakken om datamengden er for stor
     // Her oppdaterer vi kun lengden, fordi memcpy brukes senere
     // for å faktisk sende pakken, og da definerer vi lengden med len
     if (len > L4Payloadsize) {
-        printf("Kutter datapakke fra %d til %d bytes\n", len, L4Payloadsize);
         len = L4Payloadsize;
     }
 
@@ -100,7 +98,6 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
         perror("Error mallocing space for buffer");
         return -1;
     }
-    printf("Total pakkestørrelse: %d bytes\n", packetsize);
 
     memcpy(packet, header, L4Headersize); // Legger først inn header
     memcpy(packet+L4Headersize, data, len); // Så datapakken 
@@ -112,7 +109,6 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
     for (int attempt = 1; attempt <= 4; attempt++) {
 
         // Sender pakken via L2
-        printf("Forsøk: %d. Sender %d bytes\n", attempt, len);
         int send = l2sap_sendto(l4->l2sap, packet, len+L4Headersize);
         if (send != 1) {
             perror("Error sending frame from L2");
@@ -130,51 +126,38 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
         // L2 legger L4-pakken på bufferet
         uint8_t buffer[L2Framesize]; 
         int recieved = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &l4->timeout);
-        printf("Antall bytes mottatt fra l2_recieve_timeout: %d bytes\n", recieved);
 
         // En pakke har ankommet
         if (recieved > 0) {
 
             // Henter ut header
             struct L4Header* recv_header = (struct L4Header*)buffer;
-            printf("Header mottatt fra L2-pakke:\n");
-            printf("  Type:   %d\n", recv_header->type);
-            printf("  Seqno:  %d\n", recv_header->seqno);
-            printf("  Ackno:  %d\n", recv_header->ackno);
-            printf("  MBZ:    %d\n", recv_header->mbz);
 
             // Her kan mottatt pakke være ACK eller RESET
             if (recv_header->type == L4_ACK) {
-                printf("Pakke er ACK\n");
-                printf("Ack: %d, current seq: %d\n", recv_header->ackno, l4->current_seq);
 
 
                 // Serveren sender ack 1 for pakke 0. Vi gjør en xor på current_seq for
                 // å finne forventet ack, fordi serveren sender seq for "neste pakke"
                 // som en ack for å indikere at den er klar for en ny pakke
                 if (recv_header->ackno == (l4->current_seq ^ 1)) { 
-                printf("ACK stemmer, oppdaterer seq fra %d til %d\n", l4->current_seq, (l4->current_seq ^ 1));
                     l4->current_seq ^= 1; // Oppdaterer seq med XOR (flipper 0/1)
                     result = len;
                     break;
                 }
 
             } else if (recv_header->type == L4_RESET) { // Resetter
-                printf("Pakke er reset. Avbryter\n");
                 l4->reset = 1;
                 result = L4_QUIT;
                 break;
             } else if (recv_header->type == L4_DATA) {
-                printf("Mottatt data-pakke i send. Forkaster pakken\n");
                 continue;
             }
         } // Ingen pakke, prøv på nytt
     }
-    printf("Loopen er over, frigjør alt minne\n");
 
     free(header); // Frigjøre minne
     free(packet);
-    printf("----L4 END----\n");
     return result;
 }
 
@@ -201,12 +184,9 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
  // Ansvaret til denne funksjonen er å motta datapakker
 int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 {
-    printf("----L4 RECIEVE CALLED----\n");
-    printf("Antall bytes på parameter: %d bytes\n", len);
 
     uint8_t buffer[L2Framesize];
     int recieved = l2sap_recvfrom(l4->l2sap, buffer, sizeof(buffer));
-    printf("Mottatt %d bytes fra L2\n", recieved);
     if (recieved < 0) {
         perror("Error recieving frame from L2");
         return -1;
@@ -217,17 +197,14 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 
     // Hvis en reset-pakke blir sendt 
     if (recv_header->type == L4_RESET) {
-        printf("Mottatt reset-pakke\n");
         l4->reset = 1;
         return L4_QUIT;
     } else if (recv_header->type == L4_DATA) {
-        printf("Mottatt data-pakke\n");
 
         // Fjerne headeren 
         // Oppdaterer pointer til å peke på data etter header
         uint8_t* payload = buffer + L4Headersize;
         int payload_size = recieved - L4Headersize;
-        printf("Fjernet gammel L4-header. Payload size: %d bytes\n", payload_size);
         memcpy(data, payload, payload_size);
 
         // opprett ny header med ack
