@@ -131,6 +131,7 @@ L4SAP* l4sap_create( const char* server_ip, int server_port );
  * DATA packets must be handled to achieve a full duplex operation.
  */
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len );
+int send_ack(L4SAP* l4, struct L4Header* recv_header);
 
 /* l4sap_recv is a blocking function that receives data from
  * its peer entity.
