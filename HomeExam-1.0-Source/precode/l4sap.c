@@ -13,6 +13,8 @@
  * data of this L4 entity (including the pointer to the L2 entity
  * used).
  */
+
+
 L4SAP* l4sap_create( const char* server_ip, int server_port )
 {
 
@@ -115,6 +117,7 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
         
         int send = l2sap_sendto(l4->l2sap, packet, len+L4Headersize);
         printf("Sendte pakke på forsøk %d: seq: %d, forventet ack: %d\n", attempt, header->seqno, header->ackno);
+        printf("Pakkens størrelse: %d\n", len);
         if (send != 1) {
             perror("Error sending frame from L2");
             free(header);
@@ -148,10 +151,11 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
                 // å finne forventet ack, fordi serveren sender seq for "neste pakke"
                 // som en ack for å indikere at den er klar for en ny pakke
                 if (recv_header->ackno == (l4->current_seq_send ^ 1)) { 
+                    printf("ACK ok: oppdaterer current_seq_send til %d\n", l4->current_seq_send);
                     l4->current_seq_send ^= 1; // Oppdaterer seq med XOR (flipper 0/1)
                     result = len;
                     break;
-                } // Hvis ack er feil: nytt forsøk
+                } printf("Feil ack mottatt\n");
 
             } else if (recv_header->type == L4_RESET) { // Resetter
                 printf("MOTTOK RESET-pakke\n");
@@ -248,11 +252,14 @@ int send_ack(L4SAP* l4, struct L4Header* recv_header) {
 int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 {
 
-    // Fortsetter å motta pakker helt til det kommer
-    // en ny datapakke (ikke duplikat)
+    // Loopen går evig til det kommer en ny data-pakke
+    // Da må denne håndteres
     uint8_t buffer[L2Framesize];
+    int counter = 0;
 
     while (1) {
+        printf("While loop runde %d\n", counter);
+        counter++;
 
         int received = l2sap_recvfrom(l4->l2sap, buffer, sizeof(buffer));
         if (received < 0) {
@@ -270,6 +277,10 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
             return L4_QUIT;
 
         // Hvis datapakke: send ack og sjekk om duplikat
+        } else if (recv_header->type == L4_ACK) {
+            printf("Ack kom inn i recieve\n");
+
+
         } else if (recv_header->type == L4_DATA) {
 
             printf("Mottatt DATA-pakke fra server med seq = %d\n", recv_header->seqno);
@@ -281,15 +292,10 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
                 return -1;
             } 
 
-            /* Når vi gjør dette funker det plutselig?? men dårlig praksis da hehe
-            send_ack(l4, recv_header);
-            send_ack(l4, recv_header);
-            send_ack(l4, recv_header);
-            send_ack(l4, recv_header);*/
-
-            // Hvis duplikat:
+            // Hvis duplikat (samme seq som forrige pakke den mottok)
             if (recv_header->seqno == l4->last_seq_received) {
                 printf("Duplikat!\n");
+                l4->last_ack_sent = sent_ack;
                 continue; // Går tilbake til start på while-løkken
             }
             
@@ -315,11 +321,7 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 
             return payload_size;
         }
-
     }
-
-    
-
     return L4_QUIT;
 }
 

@@ -219,11 +219,9 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
 
         uint8_t correct_cs = compute_checksum(data, recv_len);
 
-        printf("Recieved checksum: %d, correct checksum: %d\n", recv_cs, correct_cs);
 
         if (recv_cs != correct_cs) {
             perror("Checksum not correct");
-            printf("her har det skjedd en feil\n");
             return -1;
         }
 
