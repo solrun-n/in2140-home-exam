@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
+
 
 #include "l4sap.h"
 #include "l2sap.h"
@@ -13,6 +15,21 @@
  * data of this L4 entity (including the pointer to the L2 entity
  * used).
  */
+
+ // Returnerer tidspunktet nå
+struct timeval now() {
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    return t;
+}
+
+// Returnerer hvor mange sekunder som har gått siden start
+double time_elapsed(struct timeval start) {
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    double seconds = (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1e6;
+    return seconds;
+}
 
 
 L4SAP* l4sap_create( const char* server_ip, int server_port )
@@ -34,6 +51,7 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
     l4sap->last_seq_received = 1; // første mottatte seq vil alltid være 0
     l4sap->last_ack_sent = 0;
     l4sap->reset = 0; 
+    l4sap->ack_received = 0;
     
     l4sap->timeout.tv_sec = 1;
     l4sap->timeout.tv_usec = 0;
@@ -118,7 +136,7 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
         printf("SEND: Current seq før avsending av pakke: %d\n", l4->current_seq_send);
         
         int send = l2sap_sendto(l4->l2sap, packet, len+L4Headersize);
-        printf("SEND: Sendte pakke på forsøk %d: seq: %d, forventet ack: %d\n", attempt, header->seqno, header->ackno);
+        printf("SEND: Sendte pakke på forsøk %d: seq: %d\n", attempt, header->seqno);
         printf("SEND: Pakkens størrelse: %d\n", len);
         if (send != 1) {
             perror("Error sending frame from L2");
@@ -126,8 +144,20 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
             free(packet);
             return -1;
         }  
+
+        struct timeval start = now();
+        while (time_elapsed(start) < 1.0) {
+            int got_data = wait(l4, NULL, NULL);
+            if (l4->ack_received) { // hvis acken har kommet inn:
+                printf("Har mottatt ack\n");
+                l4->current_seq_send ^= 1; // Oppdaterer seq med XOR (flipper 0/1)
+                free(header);
+                free(packet);
+                return len;
+            }
+        }
         
-        // Resetter timeout hver runde 
+        /*// Resetter timeout hver runde 
         l4->timeout.tv_sec = 1;
         l4->timeout.tv_usec = 0;
 
@@ -180,17 +210,63 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
             }
         } 
         printf("SEND: timeout. Prøver igjen\n");
-        // Ingen pakke, prøv på nytt
+        // Ingen pakke, prøv på nytt*/
     }
 
-    printf("SEND: frigjør minne og returnerer\n");
+    /*printf("SEND: frigjør minne og returnerer\n");
 
     free(header); // Frigjøre minne
     free(packet);
-    return result;
+    return result;*/
 }
 
 
+// Hjelpefunksjon som mottar alle pakker
+int wait(L4SAP* l4, uint8_t* data, int len) {
+    uint8_t buffer[L2Framesize];
+    struct timeval timeout = {0, 0}; // non-blocking
+    int received = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &timeout);
+
+    if (received <= 0) return 0; // Ingen data akkurat nå
+
+    struct L4Header* header = (struct L4Header*)buffer;
+
+    switch (header->type) {
+
+        // Hvis det er en ack: vet at vi ikke trenger å sende pakken på nytt
+        case L4_ACK:
+        printf("Mottatt ACK: %d\n", header->ackno);
+            // Om ack er ok, oppdateres ack_received
+            if (header->ackno == (l4->current_seq_send ^ 1)) {
+                l4->ack_received = 1;
+                break;
+            }
+
+        case L4_DATA:
+        ("Mottatt data\n");
+            // send ACK
+            send_ack(l4, header);
+
+            // sjekk for duplikat
+            if (header->seqno != l4->last_seq_received) {
+                l4->last_seq_received = header->seqno;
+                l4->last_ack_sent = header->seqno ^ 1;
+
+                // lagre data
+                uint8_t* payload = buffer + L4Headersize;
+                int payload_size = received - L4Headersize;
+                memcpy(data, payload, payload_size);
+                return payload_size;
+            }
+            break;
+
+        case L4_RESET:
+            l4->reset = 1;
+            return L4_QUIT;
+    }
+
+    return 0; // fortsatt ingen ny data
+}
 
 
 // Hjelpefunksjon for å sende en ack
@@ -253,7 +329,18 @@ int send_ack(L4SAP* l4, struct L4Header* recv_header) {
 int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 {
 
-    // Loopen går evig til det kommer en ny data-pakke
+    while (1) {
+        int len = 0;
+        int result = wait(l4, data, len);
+        if (result == 1) {
+            return len;
+        } else if (result < 0) {
+            return L4_QUIT;
+        }
+        usleep(10000); // sov i 10ms for å unngå tight spin-loop
+    }
+
+    /*// Loopen går evig til det kommer en ny data-pakke
     // Da må denne håndteres
     uint8_t buffer[L2Framesize];
     int counter = 0;
@@ -323,7 +410,7 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
             return payload_size;
         }
     }
-    return L4_QUIT;
+    return L4_QUIT;*/
 }
 
 /** This function is called to terminate the L4 entity and

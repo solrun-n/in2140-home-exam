@@ -97,6 +97,7 @@ struct L4SAP
     uint8_t current_seq_send; // seq for neste pakke som skal sendes
     uint8_t last_seq_received; // forrige mottatte pakke
     uint8_t last_ack_sent; // forrige ack som ble sendt
+    uint8_t ack_received;
     uint8_t reset; // for å vite om en RESET er sendt (1: true, 0: false)
     struct timeval timeout;
 };
@@ -132,6 +133,7 @@ L4SAP* l4sap_create( const char* server_ip, int server_port );
  */
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len );
 int send_ack(L4SAP* l4, struct L4Header* recv_header);
+int wait(L4SAP* l4, uint8_t* data, int len);
 
 /* l4sap_recv is a blocking function that receives data from
  * its peer entity.
