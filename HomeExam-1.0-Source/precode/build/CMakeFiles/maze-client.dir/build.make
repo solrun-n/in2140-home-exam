@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode
+CMAKE_SOURCE_DIR = /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build
+CMAKE_BINARY_DIR = /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/maze-client.dir/depend.make
@@ -70,74 +70,74 @@ include CMakeFiles/maze-client.dir/progress.make
 include CMakeFiles/maze-client.dir/flags.make
 
 CMakeFiles/maze-client.dir/maze-client.c.o: CMakeFiles/maze-client.dir/flags.make
-CMakeFiles/maze-client.dir/maze-client.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-client.c
+CMakeFiles/maze-client.dir/maze-client.c.o: /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-client.c
 CMakeFiles/maze-client.dir/maze-client.c.o: CMakeFiles/maze-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/maze-client.dir/maze-client.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/maze-client.c.o -MF CMakeFiles/maze-client.dir/maze-client.c.o.d -o CMakeFiles/maze-client.dir/maze-client.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-client.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/maze-client.dir/maze-client.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/maze-client.c.o -MF CMakeFiles/maze-client.dir/maze-client.c.o.d -o CMakeFiles/maze-client.dir/maze-client.c.o -c /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-client.c
 
 CMakeFiles/maze-client.dir/maze-client.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/maze-client.dir/maze-client.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-client.c > CMakeFiles/maze-client.dir/maze-client.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-client.c > CMakeFiles/maze-client.dir/maze-client.c.i
 
 CMakeFiles/maze-client.dir/maze-client.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/maze-client.dir/maze-client.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-client.c -o CMakeFiles/maze-client.dir/maze-client.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-client.c -o CMakeFiles/maze-client.dir/maze-client.c.s
 
 CMakeFiles/maze-client.dir/l4sap.c.o: CMakeFiles/maze-client.dir/flags.make
-CMakeFiles/maze-client.dir/l4sap.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c
+CMakeFiles/maze-client.dir/l4sap.c.o: /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l4sap.c
 CMakeFiles/maze-client.dir/l4sap.c.o: CMakeFiles/maze-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/maze-client.dir/l4sap.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/l4sap.c.o -MF CMakeFiles/maze-client.dir/l4sap.c.o.d -o CMakeFiles/maze-client.dir/l4sap.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/maze-client.dir/l4sap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/l4sap.c.o -MF CMakeFiles/maze-client.dir/l4sap.c.o.d -o CMakeFiles/maze-client.dir/l4sap.c.o -c /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l4sap.c
 
 CMakeFiles/maze-client.dir/l4sap.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/maze-client.dir/l4sap.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c > CMakeFiles/maze-client.dir/l4sap.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l4sap.c > CMakeFiles/maze-client.dir/l4sap.c.i
 
 CMakeFiles/maze-client.dir/l4sap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/maze-client.dir/l4sap.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c -o CMakeFiles/maze-client.dir/l4sap.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l4sap.c -o CMakeFiles/maze-client.dir/l4sap.c.s
 
 CMakeFiles/maze-client.dir/l2sap.c.o: CMakeFiles/maze-client.dir/flags.make
-CMakeFiles/maze-client.dir/l2sap.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c
+CMakeFiles/maze-client.dir/l2sap.c.o: /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l2sap.c
 CMakeFiles/maze-client.dir/l2sap.c.o: CMakeFiles/maze-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/maze-client.dir/l2sap.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/l2sap.c.o -MF CMakeFiles/maze-client.dir/l2sap.c.o.d -o CMakeFiles/maze-client.dir/l2sap.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/maze-client.dir/l2sap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/l2sap.c.o -MF CMakeFiles/maze-client.dir/l2sap.c.o.d -o CMakeFiles/maze-client.dir/l2sap.c.o -c /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l2sap.c
 
 CMakeFiles/maze-client.dir/l2sap.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/maze-client.dir/l2sap.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c > CMakeFiles/maze-client.dir/l2sap.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l2sap.c > CMakeFiles/maze-client.dir/l2sap.c.i
 
 CMakeFiles/maze-client.dir/l2sap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/maze-client.dir/l2sap.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c -o CMakeFiles/maze-client.dir/l2sap.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l2sap.c -o CMakeFiles/maze-client.dir/l2sap.c.s
 
 CMakeFiles/maze-client.dir/maze.c.o: CMakeFiles/maze-client.dir/flags.make
-CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.c
+CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze.c
 CMakeFiles/maze-client.dir/maze.c.o: CMakeFiles/maze-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/maze-client.dir/maze.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/maze.c.o -MF CMakeFiles/maze-client.dir/maze.c.o.d -o CMakeFiles/maze-client.dir/maze.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/maze-client.dir/maze.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/maze.c.o -MF CMakeFiles/maze-client.dir/maze.c.o.d -o CMakeFiles/maze-client.dir/maze.c.o -c /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze.c
 
 CMakeFiles/maze-client.dir/maze.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/maze-client.dir/maze.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.c > CMakeFiles/maze-client.dir/maze.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze.c > CMakeFiles/maze-client.dir/maze.c.i
 
 CMakeFiles/maze-client.dir/maze.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/maze-client.dir/maze.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.c -o CMakeFiles/maze-client.dir/maze.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze.c -o CMakeFiles/maze-client.dir/maze.c.s
 
 CMakeFiles/maze-client.dir/maze-plot.c.o: CMakeFiles/maze-client.dir/flags.make
-CMakeFiles/maze-client.dir/maze-plot.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-plot.c
+CMakeFiles/maze-client.dir/maze-plot.c.o: /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-plot.c
 CMakeFiles/maze-client.dir/maze-plot.c.o: CMakeFiles/maze-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/maze-client.dir/maze-plot.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/maze-plot.c.o -MF CMakeFiles/maze-client.dir/maze-plot.c.o.d -o CMakeFiles/maze-client.dir/maze-plot.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-plot.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/maze-client.dir/maze-plot.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/maze-client.dir/maze-plot.c.o -MF CMakeFiles/maze-client.dir/maze-plot.c.o.d -o CMakeFiles/maze-client.dir/maze-plot.c.o -c /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-plot.c
 
 CMakeFiles/maze-client.dir/maze-plot.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/maze-client.dir/maze-plot.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-plot.c > CMakeFiles/maze-client.dir/maze-plot.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-plot.c > CMakeFiles/maze-client.dir/maze-plot.c.i
 
 CMakeFiles/maze-client.dir/maze-plot.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/maze-client.dir/maze-plot.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-plot.c -o CMakeFiles/maze-client.dir/maze-plot.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/maze-plot.c -o CMakeFiles/maze-client.dir/maze-plot.c.s
 
 # Object files for target maze-client
 maze__client_OBJECTS = \
@@ -157,7 +157,7 @@ maze-client: CMakeFiles/maze-client.dir/maze.c.o
 maze-client: CMakeFiles/maze-client.dir/maze-plot.c.o
 maze-client: CMakeFiles/maze-client.dir/build.make
 maze-client: CMakeFiles/maze-client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable maze-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable maze-client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/maze-client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -169,6 +169,6 @@ CMakeFiles/maze-client.dir/clean:
 .PHONY : CMakeFiles/maze-client.dir/clean
 
 CMakeFiles/maze-client.dir/depend:
-	cd /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/maze-client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/maze-client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/maze-client.dir/depend
 

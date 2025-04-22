@@ -1,5 +1,5 @@
 CMakeFiles/transport-test-client.dir/l4sap.c.o: \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c \
+ /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l4sap.c \
  /usr/include/stdc-predef.h /usr/include/sys/socket.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/bits/wordsize.h /usr/include/bits/timesize.h \
@@ -45,8 +45,8 @@ CMakeFiles/transport-test-client.dir/l4sap.c.o: \
  /usr/include/bits/floatn-common.h /usr/include/stdlib.h \
  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
  /usr/include/alloca.h /usr/include/bits/stdlib-float.h \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.h \
+ /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l4sap.h \
+ /uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode/l2sap.h \
  /usr/include/inttypes.h \
  /usr/lib/gcc/x86_64-redhat-linux/11/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h /usr/include/arpa/inet.h

@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = -I/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode
+C_INCLUDES = -I/uio/hume/student-u75/gyrifs/in2140_homeexam/home-exam/HomeExam-1.0-Source/precode
 
 C_FLAGS = -g -std=gnu11
 
