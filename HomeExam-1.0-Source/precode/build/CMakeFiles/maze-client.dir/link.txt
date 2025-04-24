@@ -1,1 +1,0 @@
-/usr/bin/cc -g "CMakeFiles/maze-client.dir/maze-client.c.o" "CMakeFiles/maze-client.dir/l4sap.c.o" "CMakeFiles/maze-client.dir/l2sap.c.o" "CMakeFiles/maze-client.dir/maze.c.o" "CMakeFiles/maze-client.dir/maze-plot.c.o" -o maze-client 
