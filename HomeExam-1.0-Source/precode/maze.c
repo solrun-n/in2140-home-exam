@@ -6,13 +6,13 @@
 #include "maze.h"
 
 // Hjelpefunksjon for å få tilgang til en celle i labyrinten
-static inline int index(const Maze* m, int x, int y) {
+static inline int maze_index(const Maze* m, int x, int y) {
     return y * m->edgeLen + x;
 }
 
 // Hjelpefunksjon for å merke løsningen
 void markSolution(Maze* maze, int x, int y) {
-    maze->maze[index(maze, x, y)] |= mark;
+    maze->maze[maze_index(maze, x, y)] |= mark;
 }
 
 // Rekursiv DFS med tilbakeføring for å finne den korteste stien
@@ -23,7 +23,7 @@ static int dfs(Maze* maze, int x, int y, int endX, int endY, int pathLength, int
         return 1;
     }
 
-    char* cell = &maze->maze[index(maze, x, y)];
+    char* cell = &maze->maze[maze_index(maze, x, y)];
 
     // Merk denne cellen som besøkt midlertidig
     if (*cell & tmark) return 0; // Vi har vært her før
@@ -45,7 +45,7 @@ static int dfs(Maze* maze, int x, int y, int endX, int endY, int pathLength, int
             continue;
 
         char thisCell = *cell;
-        char nextCell = maze->maze[index(maze, nx, ny)];
+        char nextCell = maze->maze[maze_index(maze, nx, ny)];
 
         // Sjekk om det er en vei i denne retningen
         if ((thisCell & dir[i]) && (nextCell & opp[i])) {
