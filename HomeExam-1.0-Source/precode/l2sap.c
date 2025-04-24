@@ -206,7 +206,6 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
         int recv_len = recvfrom(client->socket, data, len, 0, (struct sockaddr*) &client->peer_addr, &address_length);
 
 
-
         if (recv_len < L2Headersize) {
             perror("Frame too short");
             return -1;
@@ -226,10 +225,9 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
         // Fjerne headeren 
         // Oppdaterer pointer til å peke på data etter header
         uint8_t* payload = data + L2Headersize;
-        memcpy(data, payload, len - L2Headersize); // sjekk om denne skal være recieved
+        memcpy(data, payload, recv_len - L2Headersize); 
 
-        // TODO: sjekk om vi skal returnere denne eller len
-        return recv_len;
+        return recv_len-L2Headersize;
     }
 }
 
