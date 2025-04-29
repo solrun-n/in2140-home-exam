@@ -263,6 +263,7 @@ int send_ack(L4SAP* l4, struct L4Header* recv_header) {
  // headeren må sjekkes, payload skal legges inn i data og lengden skal returneres
  // sender ack via l2sendto
 
+
  // Ansvaret til denne funksjonen er å motta datapakker og sende acks
 int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 {
@@ -285,7 +286,7 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
         int received = l2sap_recvfrom(l4->l2sap, buffer, sizeof(buffer));
         if (received < 0) {
             perror("Error recieving frame from L2");
-            return -1;
+            continue;
         }
 
         // Henter ut headeren
