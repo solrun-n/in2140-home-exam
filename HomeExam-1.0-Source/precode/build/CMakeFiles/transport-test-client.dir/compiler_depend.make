@@ -176,6 +176,7 @@ CMakeFiles/transport-test-client.dir/l4sap.c.o: /uio/hume/student-u54/solrunny/i
   /usr/include/bits/waitstatus.h \
   /usr/include/alloca.h \
   /usr/include/bits/stdlib-float.h \
+  /usr/include/sys/time.h \
   /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h \
   /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.h \
   /usr/include/inttypes.h \
@@ -351,6 +352,8 @@ CMakeFiles/transport-test-client.dir/transport-test-client.c.o: /uio/hume/studen
 /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c:
 
 /usr/include/sys/cdefs.h:
+
+/usr/include/sys/time.h:
 
 /usr/include/bits/posix_opt.h:
 

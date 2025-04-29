@@ -91,13 +91,18 @@ typedef struct L4SAP L4SAP;
  // Trenger en referanse til L2SAP
  // Holder midlertidig referanse til seq
  // Bruker en timeval for å time pakker
-struct L4SAP
-{
-    struct L2SAP* l2sap;
-    uint8_t current_seq; // seq for neste pakke som skal sendes
-    uint8_t reset; // for å vite om en RESET er sendt (1: true, 0: false)
-    struct timeval timeout;
-};
+ struct L4SAP
+ {
+     struct L2SAP* l2sap;
+     uint8_t current_seq_send; // seq for neste pakke som skal sendes
+     uint8_t last_seq_received; // forrige mottatte pakke
+     uint8_t last_ack_sent; // forrige ack som ble sendt
+     uint8_t reset; // for å vite om en RESET er sendt (1: true, 0: false)
+     struct timeval timeout;
+     uint8_t pending_data[L4Payloadsize];
+     uint8_t pending_len;
+     uint8_t has_pending_data;
+ };
 
 
 /* Create an L4 client.
@@ -129,6 +134,7 @@ L4SAP* l4sap_create( const char* server_ip, int server_port );
  * DATA packets must be handled to achieve a full duplex operation.
  */
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len );
+int send_ack(L4SAP* l4, struct L4Header* recv_header);
 
 /* l4sap_recv is a blocking function that receives data from
  * its peer entity.
