@@ -177,6 +177,10 @@ CMakeFiles/transport-test-client.dir/l4sap.c.o: /uio/hume/student-u54/solrunny/i
   /usr/include/alloca.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/sys/time.h \
+  /usr/include/time.h \
+  /usr/include/bits/time.h \
+  /usr/include/bits/types/struct_tm.h \
+  /usr/include/bits/types/struct_itimerspec.h \
   /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h \
   /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.h \
   /usr/include/inttypes.h \
@@ -273,6 +277,10 @@ CMakeFiles/transport-test-client.dir/transport-test-client.c.o: /uio/hume/studen
 
 /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h:
 
+/usr/include/time.h:
+
+/usr/include/bits/types/struct_tm.h:
+
 /usr/include/bits/wchar.h:
 
 /usr/include/stdint.h:
@@ -288,6 +296,8 @@ CMakeFiles/transport-test-client.dir/transport-test-client.c.o: /uio/hume/studen
 /usr/include/asm-generic/bitsperlong.h:
 
 /usr/include/asm/bitsperlong.h:
+
+/usr/include/bits/time.h:
 
 /usr/include/asm/posix_types_64.h:
 
@@ -410,6 +420,8 @@ CMakeFiles/transport-test-client.dir/transport-test-client.c.o: /uio/hume/studen
 /usr/include/bits/types/__sigset_t.h:
 
 /usr/include/bits/waitstatus.h:
+
+/usr/include/bits/types/struct_itimerspec.h:
 
 /usr/include/linux/stddef.h:
 

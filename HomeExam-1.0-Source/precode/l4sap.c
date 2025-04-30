@@ -5,10 +5,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <time.h>       // for struct tm, localtime, strftime
 
 
 #include "l4sap.h"
 #include "l2sap.h"
+
+void print_timestamp() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    struct tm* tm_info = localtime(&tv.tv_sec);
+    
+    char time_buf[20];
+    strftime(time_buf, sizeof(time_buf), "%H:%M:%S", tm_info);
+    printf("[%s.%03ld] ", time_buf, tv.tv_usec / 1000);
+}
 
 /* Create an L4 client.
  * It returns a dynamically allocated struct L4SAP that contains the
@@ -114,30 +125,72 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
     int result = L4_SEND_FAILED;
     
     for (int attempt = 1; attempt <= 4; attempt++) {
+        printf("SEND: Forsøk: %d\n", attempt);
 
         // Sender pakken via L2
         // Sender kun dersom vi er ferdige med forrige pakke
         printf("SEND: Current seq før avsending av pakke: %d\n", l4->current_seq_send);
         
         int send = l2sap_sendto(l4->l2sap, packet, len+L4Headersize);
-        printf("SEND: Sendte pakke på forsøk %d: seq: %d\n", attempt, header->seqno);
+        print_timestamp(); printf("SEND: Sendte pakke på forsøk %d: seq: %d\n", attempt, header->seqno);
         printf("SEND: Pakkens størrelse: %d\n", len);
         if (send != 1) {
             perror("Error sending frame from L2");
-            free(header);
-            free(packet);
-            return -1;
+            continue;
         }  
         
         // Resetter timeout hver runde 
         l4->timeout.tv_sec = 1;
         l4->timeout.tv_usec = 0;
 
+        uint8_t buffer[L2Framesize]; 
+        int received = 0; // Initializing received to zero
+        int is_ack_received = 0; // Flag for ACK received
+
+        // Mottar data mens det er timeout
+        while(1) {
+            received = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &l4->timeout);
+            if (received <= 0) {
+                printf("SEND: timeout for å motta ack. Prøver igjen\n");
+                break; // Time out if nothing is received
+            }
+
+            struct L4Header* recv_header = (struct L4Header*)buffer;
+
+            // Sjekk for ACK
+            if (recv_header->type == L4_ACK && recv_header->ackno == (l4->current_seq_send ^ 1)) {
+                printf("SEND: mottok ACK-pakke: ack: %d\n", recv_header->ackno);
+                is_ack_received = 1; // Set flag for successful ACK received
+                l4->current_seq_send ^= 1; // Toggle seq number
+                result = len; // Successful transmission
+                break; // Exit the while loop
+            } else {
+                // Handle other types of packets (like L4_DATA or unrecognized packets)
+                printf("SEND: mottok annen pakke, type: %d\n", recv_header->type);
+            }
+        }
+
+        // If ACK was not received, increment attempt and retry
+        if (!is_ack_received) {
+            printf("SEND: Ingen ACK, vil på nytt...\n");
+        } else {
+            printf("SEND: ACK mottatt, avslutter sending...\n");
+            break; // Exit attempts, as we received ACK    
+        }
+    }
+
+    // Frigjør minne
+    free(header); 
+    free(packet);
+    return result; // Return result of sending
+}
+
         // Oppretter et buffer der mottatt data skal legges
         // og kaller på receive i L2 for å hente ut ack
         // L2 legger L4-pakken på bufferet
-        uint8_t buffer[L2Framesize]; 
+        /*uint8_t buffer[L2Framesize]; 
         int received = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &l4->timeout);
+        if (received < 0) printf("error i mottak fra l2\n");
 
         // En pakke har ankommet
         if (received > 0) {
@@ -147,7 +200,7 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 
             // Mottar pakke for å sende ack
             if (recv_header->type == L4_ACK) {
-                printf("SEND: mottok ack-pakke: ack: %d\n", recv_header->ackno);
+                print_timestamp(); printf("SEND: mottok ack-pakke: ack: %d\n", recv_header->ackno);
 
                 // Serveren sender ack 1 for pakke 0. Vi gjør en xor på current_seq_send for
                 // å finne forventet ack, fordi serveren sender seq for "neste pakke"
@@ -166,15 +219,14 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
                 break;
 
             } else if (recv_header->type == L4_DATA) {
-                printf("MOTTOK DATA-pakke i sendto. Seq = %d\n", recv_header->seqno);
+                print_timestamp(); printf("MOTTOK DATA-pakke i sendto. Seq = %d\n", recv_header->seqno);
 
                 int sent_ack = send_ack(l4, recv_header); // Kaller på hjelpefunksjon
                 if (sent_ack < 0) {
                     perror("Error sending ack");
-                    free(header);
-                    free(packet);
-                    return -1;
+                    continue;
                 } 
+                l4->last_ack_sent = sent_ack;
 
                 // Sjekker om mottatt pakke er duplikat
                 // Hvis duplikat: ignorer, hvis ny pakke: legg i buffer
@@ -190,12 +242,15 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
                     memcpy(l4->pending_data, buffer + L4Headersize, received - L4Headersize);
                     l4->pending_len = received - L4Headersize;
                     l4->has_pending_data = 1;
+                    continue;
                 }
-  
+
             }
-        } 
-        printf("SEND: timeout for å motta ack. Prøver igjen\n");
-        // Ingen pakke, prøv på nytt
+        } else {
+             // Ingen pakke, prøv på nytt
+            print_timestamp(); printf("SEND: timeout for å motta ack. Prøver igjen\n");
+
+        }
     }
 
     printf("SEND: frigjør minne og returnerer\n");
@@ -203,7 +258,7 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
     free(header); // Frigjøre minne
     free(packet);
     return result;
-}
+}*/
 
 
 // Hjelpefunksjon for å sende en ack
@@ -302,7 +357,6 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
         } else if (recv_header->type == L4_ACK) {
             printf("-------------------RECV: mottok ack\n");
             
-
 
             // Hvis datapakke: send ack og sjekk om duplikat, hvis duplikat fortsett å vent på ny pakke
         } else if (recv_header->type == L4_DATA) {
