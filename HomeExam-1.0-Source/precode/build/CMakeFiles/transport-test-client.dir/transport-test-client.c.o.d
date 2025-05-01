@@ -1,5 +1,5 @@
 CMakeFiles/transport-test-client.dir/transport-test-client.c.o: \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/transport-test-client.c \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/transport-test-client.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -32,7 +32,7 @@ CMakeFiles/transport-test-client.dir/transport-test-client.c.o: \
  /usr/include/bits/stdlib-float.h /usr/include/string.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
  /usr/include/strings.h \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l4sap.h \
  /usr/include/sys/socket.h /usr/include/bits/types/struct_iovec.h \
  /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
  /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
@@ -43,7 +43,7 @@ CMakeFiles/transport-test-client.dir/transport-test-client.c.o: \
  /usr/include/asm/sockios.h /usr/include/asm-generic/sockios.h \
  /usr/include/bits/types/struct_osockaddr.h /usr/include/netinet/in.h \
  /usr/include/bits/stdint-uintn.h /usr/include/bits/in.h \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.h \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.h \
  /usr/include/inttypes.h \
  /usr/lib/gcc/x86_64-redhat-linux/11/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h /usr/include/arpa/inet.h

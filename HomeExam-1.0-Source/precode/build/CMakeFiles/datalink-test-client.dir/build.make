@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode
+CMAKE_SOURCE_DIR = /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build
+CMAKE_BINARY_DIR = /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/datalink-test-client.dir/depend.make
@@ -70,32 +70,32 @@ include CMakeFiles/datalink-test-client.dir/progress.make
 include CMakeFiles/datalink-test-client.dir/flags.make
 
 CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o: CMakeFiles/datalink-test-client.dir/flags.make
-CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/datalink-test-client.c
+CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o: /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/datalink-test-client.c
 CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o: CMakeFiles/datalink-test-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o -MF CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o.d -o CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/datalink-test-client.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o -MF CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o.d -o CMakeFiles/datalink-test-client.dir/datalink-test-client.c.o -c /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/datalink-test-client.c
 
 CMakeFiles/datalink-test-client.dir/datalink-test-client.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/datalink-test-client.dir/datalink-test-client.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/datalink-test-client.c > CMakeFiles/datalink-test-client.dir/datalink-test-client.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/datalink-test-client.c > CMakeFiles/datalink-test-client.dir/datalink-test-client.c.i
 
 CMakeFiles/datalink-test-client.dir/datalink-test-client.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/datalink-test-client.dir/datalink-test-client.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/datalink-test-client.c -o CMakeFiles/datalink-test-client.dir/datalink-test-client.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/datalink-test-client.c -o CMakeFiles/datalink-test-client.dir/datalink-test-client.c.s
 
 CMakeFiles/datalink-test-client.dir/l2sap.c.o: CMakeFiles/datalink-test-client.dir/flags.make
-CMakeFiles/datalink-test-client.dir/l2sap.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c
+CMakeFiles/datalink-test-client.dir/l2sap.c.o: /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c
 CMakeFiles/datalink-test-client.dir/l2sap.c.o: CMakeFiles/datalink-test-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/datalink-test-client.dir/l2sap.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/datalink-test-client.dir/l2sap.c.o -MF CMakeFiles/datalink-test-client.dir/l2sap.c.o.d -o CMakeFiles/datalink-test-client.dir/l2sap.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/datalink-test-client.dir/l2sap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/datalink-test-client.dir/l2sap.c.o -MF CMakeFiles/datalink-test-client.dir/l2sap.c.o.d -o CMakeFiles/datalink-test-client.dir/l2sap.c.o -c /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c
 
 CMakeFiles/datalink-test-client.dir/l2sap.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/datalink-test-client.dir/l2sap.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c > CMakeFiles/datalink-test-client.dir/l2sap.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c > CMakeFiles/datalink-test-client.dir/l2sap.c.i
 
 CMakeFiles/datalink-test-client.dir/l2sap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/datalink-test-client.dir/l2sap.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c -o CMakeFiles/datalink-test-client.dir/l2sap.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c -o CMakeFiles/datalink-test-client.dir/l2sap.c.s
 
 # Object files for target datalink-test-client
 datalink__test__client_OBJECTS = \
@@ -109,7 +109,7 @@ datalink-test-client: CMakeFiles/datalink-test-client.dir/datalink-test-client.c
 datalink-test-client: CMakeFiles/datalink-test-client.dir/l2sap.c.o
 datalink-test-client: CMakeFiles/datalink-test-client.dir/build.make
 datalink-test-client: CMakeFiles/datalink-test-client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable datalink-test-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable datalink-test-client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/datalink-test-client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -121,6 +121,6 @@ CMakeFiles/datalink-test-client.dir/clean:
 .PHONY : CMakeFiles/datalink-test-client.dir/clean
 
 CMakeFiles/datalink-test-client.dir/depend:
-	cd /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/datalink-test-client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/datalink-test-client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/datalink-test-client.dir/depend
 

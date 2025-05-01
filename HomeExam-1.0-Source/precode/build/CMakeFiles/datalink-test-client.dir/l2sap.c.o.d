@@ -1,5 +1,5 @@
 CMakeFiles/datalink-test-client.dir/l2sap.c.o: \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -46,7 +46,7 @@ CMakeFiles/datalink-test-client.dir/l2sap.c.o: \
  /usr/include/asm-generic/bitsperlong.h /usr/include/asm/sockios.h \
  /usr/include/asm-generic/sockios.h \
  /usr/include/bits/types/struct_osockaddr.h /usr/include/bits/in.h \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.h \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.h \
  /usr/include/inttypes.h \
  /usr/lib/gcc/x86_64-redhat-linux/11/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h

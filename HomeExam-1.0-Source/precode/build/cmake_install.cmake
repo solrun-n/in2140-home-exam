@@ -1,4 +1,4 @@
-# Install script for directory: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode
+# Install script for directory: /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

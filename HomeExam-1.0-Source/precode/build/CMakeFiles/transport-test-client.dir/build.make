@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode
+CMAKE_SOURCE_DIR = /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build
+CMAKE_BINARY_DIR = /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/transport-test-client.dir/depend.make
@@ -70,46 +70,46 @@ include CMakeFiles/transport-test-client.dir/progress.make
 include CMakeFiles/transport-test-client.dir/flags.make
 
 CMakeFiles/transport-test-client.dir/transport-test-client.c.o: CMakeFiles/transport-test-client.dir/flags.make
-CMakeFiles/transport-test-client.dir/transport-test-client.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/transport-test-client.c
+CMakeFiles/transport-test-client.dir/transport-test-client.c.o: /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/transport-test-client.c
 CMakeFiles/transport-test-client.dir/transport-test-client.c.o: CMakeFiles/transport-test-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/transport-test-client.dir/transport-test-client.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/transport-test-client.dir/transport-test-client.c.o -MF CMakeFiles/transport-test-client.dir/transport-test-client.c.o.d -o CMakeFiles/transport-test-client.dir/transport-test-client.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/transport-test-client.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/transport-test-client.dir/transport-test-client.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/transport-test-client.dir/transport-test-client.c.o -MF CMakeFiles/transport-test-client.dir/transport-test-client.c.o.d -o CMakeFiles/transport-test-client.dir/transport-test-client.c.o -c /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/transport-test-client.c
 
 CMakeFiles/transport-test-client.dir/transport-test-client.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/transport-test-client.dir/transport-test-client.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/transport-test-client.c > CMakeFiles/transport-test-client.dir/transport-test-client.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/transport-test-client.c > CMakeFiles/transport-test-client.dir/transport-test-client.c.i
 
 CMakeFiles/transport-test-client.dir/transport-test-client.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/transport-test-client.dir/transport-test-client.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/transport-test-client.c -o CMakeFiles/transport-test-client.dir/transport-test-client.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/transport-test-client.c -o CMakeFiles/transport-test-client.dir/transport-test-client.c.s
 
 CMakeFiles/transport-test-client.dir/l4sap.c.o: CMakeFiles/transport-test-client.dir/flags.make
-CMakeFiles/transport-test-client.dir/l4sap.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c
+CMakeFiles/transport-test-client.dir/l4sap.c.o: /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l4sap.c
 CMakeFiles/transport-test-client.dir/l4sap.c.o: CMakeFiles/transport-test-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/transport-test-client.dir/l4sap.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/transport-test-client.dir/l4sap.c.o -MF CMakeFiles/transport-test-client.dir/l4sap.c.o.d -o CMakeFiles/transport-test-client.dir/l4sap.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/transport-test-client.dir/l4sap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/transport-test-client.dir/l4sap.c.o -MF CMakeFiles/transport-test-client.dir/l4sap.c.o.d -o CMakeFiles/transport-test-client.dir/l4sap.c.o -c /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l4sap.c
 
 CMakeFiles/transport-test-client.dir/l4sap.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/transport-test-client.dir/l4sap.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c > CMakeFiles/transport-test-client.dir/l4sap.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l4sap.c > CMakeFiles/transport-test-client.dir/l4sap.c.i
 
 CMakeFiles/transport-test-client.dir/l4sap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/transport-test-client.dir/l4sap.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.c -o CMakeFiles/transport-test-client.dir/l4sap.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l4sap.c -o CMakeFiles/transport-test-client.dir/l4sap.c.s
 
 CMakeFiles/transport-test-client.dir/l2sap.c.o: CMakeFiles/transport-test-client.dir/flags.make
-CMakeFiles/transport-test-client.dir/l2sap.c.o: /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c
+CMakeFiles/transport-test-client.dir/l2sap.c.o: /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c
 CMakeFiles/transport-test-client.dir/l2sap.c.o: CMakeFiles/transport-test-client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/transport-test-client.dir/l2sap.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/transport-test-client.dir/l2sap.c.o -MF CMakeFiles/transport-test-client.dir/l2sap.c.o.d -o CMakeFiles/transport-test-client.dir/l2sap.c.o -c /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/transport-test-client.dir/l2sap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/transport-test-client.dir/l2sap.c.o -MF CMakeFiles/transport-test-client.dir/l2sap.c.o.d -o CMakeFiles/transport-test-client.dir/l2sap.c.o -c /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c
 
 CMakeFiles/transport-test-client.dir/l2sap.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/transport-test-client.dir/l2sap.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c > CMakeFiles/transport-test-client.dir/l2sap.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c > CMakeFiles/transport-test-client.dir/l2sap.c.i
 
 CMakeFiles/transport-test-client.dir/l2sap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/transport-test-client.dir/l2sap.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.c -o CMakeFiles/transport-test-client.dir/l2sap.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/l2sap.c -o CMakeFiles/transport-test-client.dir/l2sap.c.s
 
 # Object files for target transport-test-client
 transport__test__client_OBJECTS = \
@@ -125,7 +125,7 @@ transport-test-client: CMakeFiles/transport-test-client.dir/l4sap.c.o
 transport-test-client: CMakeFiles/transport-test-client.dir/l2sap.c.o
 transport-test-client: CMakeFiles/transport-test-client.dir/build.make
 transport-test-client: CMakeFiles/transport-test-client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable transport-test-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable transport-test-client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/transport-test-client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -137,6 +137,6 @@ CMakeFiles/transport-test-client.dir/clean:
 .PHONY : CMakeFiles/transport-test-client.dir/clean
 
 CMakeFiles/transport-test-client.dir/depend:
-	cd /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/transport-test-client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/transport-test-client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/transport-test-client.dir/depend
 

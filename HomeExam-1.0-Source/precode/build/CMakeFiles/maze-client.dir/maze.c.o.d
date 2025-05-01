@@ -1,5 +1,5 @@
 CMakeFiles/maze-client.dir/maze.c.o: \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.c \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/maze.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -39,7 +39,7 @@ CMakeFiles/maze-client.dir/maze.c.o: \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/bits/pthread_stack_min-dynamic.h \
  /usr/include/bits/pthread_stack_min.h /usr/include/bits/posix2_lim.h \
- /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.h \
+ /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/maze.h \
  /usr/include/inttypes.h \
  /usr/lib/gcc/x86_64-redhat-linux/11/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \

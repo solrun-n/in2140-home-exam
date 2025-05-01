@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode
+CMAKE_SOURCE_DIR = /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build
+CMAKE_BINARY_DIR = /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -85,14 +85,14 @@ clean: CMakeFiles/datalink-test-client.dir/clean
 CMakeFiles/maze-client.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/maze-client.dir/build.make CMakeFiles/maze-client.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/maze-client.dir/build.make CMakeFiles/maze-client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=4,5,6,7,8,9 "Built target maze-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=4,5,6,7,8,9 "Built target maze-client"
 .PHONY : CMakeFiles/maze-client.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/maze-client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/maze-client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles 0
 .PHONY : CMakeFiles/maze-client.dir/rule
 
 # Convenience name for target.
@@ -111,14 +111,14 @@ CMakeFiles/maze-client.dir/clean:
 CMakeFiles/transport-test-client.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/transport-test-client.dir/build.make CMakeFiles/transport-test-client.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/transport-test-client.dir/build.make CMakeFiles/transport-test-client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=10,11,12,13 "Built target transport-test-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=10,11,12,13 "Built target transport-test-client"
 .PHONY : CMakeFiles/transport-test-client.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/transport-test-client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/transport-test-client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles 0
 .PHONY : CMakeFiles/transport-test-client.dir/rule
 
 # Convenience name for target.
@@ -137,14 +137,14 @@ CMakeFiles/transport-test-client.dir/clean:
 CMakeFiles/datalink-test-client.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/datalink-test-client.dir/build.make CMakeFiles/datalink-test-client.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/datalink-test-client.dir/build.make CMakeFiles/datalink-test-client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=1,2,3 "Built target datalink-test-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles --progress-num=1,2,3 "Built target datalink-test-client"
 .PHONY : CMakeFiles/datalink-test-client.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/datalink-test-client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/datalink-test-client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles 0
 .PHONY : CMakeFiles/datalink-test-client.dir/rule
 
 # Convenience name for target.
