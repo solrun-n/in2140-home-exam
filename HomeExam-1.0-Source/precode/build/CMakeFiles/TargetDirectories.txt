@@ -1,7 +1,7 @@
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/maze-client.dir
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/transport-test-client.dir
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/datalink-test-client.dir
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/package.dir
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/package_source.dir
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/edit_cache.dir
-/uio/hume/student-u53/noraheib/IN2140/home-exam/HomeExam-1.0-Source/precode/build/CMakeFiles/rebuild_cache.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/maze-client.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/transport-test-client.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/datalink-test-client.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/package.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/package_source.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/edit_cache.dir
+/uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/build/CMakeFiles/rebuild_cache.dir

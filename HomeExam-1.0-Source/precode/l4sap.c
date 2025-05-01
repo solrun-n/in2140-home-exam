@@ -35,6 +35,11 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
     l4sap->timeout.tv_sec = 1;
     l4sap->timeout.tv_usec = 0;
 
+     // Initialiserer pending_data og de relaterte feltene
+     memset(l4sap->pending_data, 0, L4Payloadsize);  // Nullstiller bufferet
+     l4sap->pending_len = 0;       // Ingen ventende data
+     l4sap->has_pending_data = 0;  // Ingen ventende data
+
     return l4sap;
 }
 
@@ -127,6 +132,7 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
                     // Sjekker om mottatt pakke er duplikat
                     // Hvis duplikat: ignorer, hvis ny pakke: legg i buffer
                     if (recv_header->seqno == l4->last_seq_received) { // Duplikat
+                        l4->last_seq_received = recv_header->seqno;
                         printf("SEND: mottok duplikat data-pakke, går videre\n");
                         continue;
                     } 
