@@ -11,22 +11,6 @@
 #include "l4sap.h"
 #include "l2sap.h"
 
-void print_timestamp() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    struct tm* tm_info = localtime(&tv.tv_sec);
-    
-    char time_buf[20];
-    strftime(time_buf, sizeof(time_buf), "%H:%M:%S", tm_info);
-    printf("[%s.%03ld] ", time_buf, tv.tv_usec / 1000);
-}
-
-/* Create an L4 client.
- * It returns a dynamically allocated struct L4SAP that contains the
- * data of this L4 entity (including the pointer to the L2 entity
- * used).
- */
-
 
 L4SAP* l4sap_create( const char* server_ip, int server_port )
 {
@@ -34,7 +18,7 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
     // Må allokere minne for L4SAP
     L4SAP* l4sap = malloc(sizeof(struct L4SAP));
     if (l4sap == NULL) {
-        perror("Error mallocing L4SAP");
+        printf("Error mallocing L4SAP\n");
         exit(EXIT_FAILURE);
     }
 
@@ -55,30 +39,6 @@ L4SAP* l4sap_create( const char* server_ip, int server_port )
 }
 
 
-
-/* The functions sends a packet to the network. The packet's payload
- * is copied from the buffer that it is passed as an argument from
- * the caller at L5.
- * If the length of that buffer, which is indicated by len, is larger
- * than L4Payloadsize, the function truncates the message to L4Payloadsize.
- *
- * The function does not return until the correct ACK from the peer entity
- * has been received.
- * When a suitable ACK arrives, the function returns the number of bytes
- * that were accepted for sending (the potentially truncated packet length).
- *
- * Waiting for a correct ACK may fail after a timeout of 1 second
- * (timeval.tv_sec = 1, timeval.tv_usec = 0). The function retransmits
- * the packet in that case.
- * The function attempts up to 4 retransmissions. If the last retransmission
- * fails with a timeout as well, the function returns L4_SEND_FAILED.
- *
- * The function may also return:
- * - L4_QUIT if the peer entity has sent an L4_RESET packet.
- * - another value < 0 if an error occurred.
- */
-
-
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 {
     
@@ -89,53 +49,36 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
         len = L4Payloadsize;
     }
 
-    // Oppretter en L4 header
-    // Sjekk om vi kan unngå å allokere header
-    struct L4Header* header = malloc(L4Headersize);
-    if (header == NULL) {
-        perror("Failed to allocate memory");
-        return -1;
-    } 
-
-    // Fyller inn headeren
+    // Allokerer headeren på stack
+    struct L4Header header;
 
     // Klienten sender alltid data, med mindre serveren har sendt en reset
     if (l4->reset) {
-        header->type = L4_QUIT;
-    } else header->type = L4_DATA;
+        header.type = L4_QUIT;
+    } else header.type = L4_DATA;
 
-    header->seqno = l4->current_seq_send; // Nåværende sekvensnr legges inn 
-    header->ackno = 0; // ack er ikke relevant her, settes alltid til 0
-    header->mbz = 0;
+    header.seqno = l4->current_seq_send; // Nåværende sekvensnr legges inn 
+    header.ackno = 0; // ack er ikke relevant her, settes alltid til 0
+    header.mbz = 0;
 
     // Legger headeren på en buffer med datapakken
     int packetsize = L4Headersize + len;
     uint8_t* packet = malloc(packetsize);
     if (packet == NULL) {
-        free(header);
         perror("Error mallocing space for buffer");
         return -1;
     }
 
-    memcpy(packet, header, L4Headersize); // Legger først inn header
+    memcpy(packet, &header, L4Headersize); // Legger først inn header
     memcpy(packet+L4Headersize, data, len); // Så datapakken 
-    // her er len oppdatert dersom pakken var for stor, så den overskrider ikke strl
+    // Her er len oppdatert dersom pakken var for stor, så den overskrider ikke strl
 
-    // Forsøker avsending av pakke maks 4 ganger
     int result = L4_SEND_FAILED;
-    int data_counter = 0;
-    int wrong_ack_counter = 0;
     
+    // Forsøker avsending av pakke maks 4 ganger
     for (int attempt = 1; attempt <= 4; attempt++) {
-        printf("SEND: Forsøk: %d\n", attempt);
 
-        // Sender pakken via L2
-        // Sender kun dersom vi er ferdige med forrige pakke
-        printf("SEND: Current seq før avsending av pakke: %d\n", l4->current_seq_send);
-        
         int send = l2sap_sendto(l4->l2sap, packet, len+L4Headersize);
-        print_timestamp(); printf("SEND: Sendte pakke på forsøk %d: seq: %d\n", attempt, header->seqno);
-        printf("SEND: Pakkens størrelse: %d\n", len);
         if (send != 1) {
             perror("Error sending frame from L2");
             continue;
@@ -146,41 +89,35 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
         l4->timeout.tv_usec = 0;
 
         uint8_t buffer[L2Framesize]; 
-        int received = 0; // Initializing received to zero
-        int is_ack_received = 0; // Flag for ACK received
+        int received = 0; // Boolean for mottatt data
+        int is_ack_received = 0; // Boolean for mottatt ack
 
-        // Mottar data mens det er timeout
+        // Mottar data fortløpende så lenge vi ikke har timeout
         while(1) {
             received = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &l4->timeout);
             if (received <= 0) {
-                printf("SEND: timeout for å motta ack. Prøver igjen\n");
-                break; // Time out if nothing is received
+                break; // Timeout hvis vi ikke mottar data fra L2
             }
 
             struct L4Header* recv_header = (struct L4Header*)buffer;
 
-            // Sjekk for ACK
+            // Sjekker om vi har mottatt ack og den er riktig
             if (recv_header->type == L4_ACK && recv_header->ackno == (l4->current_seq_send ^ 1)) {
-                printf("SEND: mottok ACK-pakke: ack: %d\n", recv_header->ackno);
-                is_ack_received = 1; // Set flag for successful ACK received
-                l4->current_seq_send ^= 1; // Toggle seq number
-                result = len; // Successful transmission
-                break; // Exit the while loop
+                is_ack_received = 1; // Ack ok
+                l4->current_seq_send ^= 1; // Oppdater neste seq som skal sendes
+                result = len; // Oppdater returverdi
+                break; 
 
-
-                // feil ack, data eller reset
+            // Om vi mottar feil ack, data eller reset
             } else {
-                // Handle other types of packets (like L4_DATA or unrecognized packets)
-                // Må håndtere reset-pakker her
-                printf("SEND: mottok annen pakke, type: %d\n", recv_header->type);
-                if (recv_header->type == L4_ACK) {
-                    wrong_ack_counter++;
-                } else {
-                    data_counter++;
-
-
-                    // GAMMEL KODE
-                    int sent_ack = send_ack(l4, recv_header); // Kaller på hjelpefunksjon
+                if (recv_header->type == L4_RESET) {
+                    l4->reset = 1;
+                    l4sap_destroy(l4);
+                    return L4_QUIT;
+        
+                } else if (recv_header->type = L4_DATA) {
+                
+                    int sent_ack = send_ack(l4, recv_header); 
                     if (sent_ack < 0) {
                         perror("Error sending ack");
                         continue;
@@ -210,7 +147,7 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
 
         // If ACK was not received, increment attempt and retry
         if (!is_ack_received) {
-            printf("SEND: Ingen ACK, vil på nytt...\n");
+            printf("SEND: Ingen ACK, prøver på nytt...\n");
         } else {
             printf("SEND: ACK mottatt, avslutter sending...\n");
             break; // Exit attempts, as we received ACK    
@@ -218,153 +155,11 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
     }
 
     // Frigjør minne
-    free(header); 
     free(packet);
-    printf("Denne runden mottok vi %d data-pakker som ble avvist\n", data_counter);
-    printf("Denne runden mottok vi %d feil acks som ble avvist\n", wrong_ack_counter);
-    data_counter = 0;
-    wrong_ack_counter = 0;
+
     return result; // Return result of sending
 }
 
-int l4sap_send_old( L4SAP* l4, const uint8_t* data, int len )
-{
-    
-    // Kutter pakken om datamengden er for stor
-    // Her oppdaterer vi kun lengden, fordi memcpy brukes senere
-    // for å faktisk sende pakken, og da definerer vi lengden med len
-    if (len > L4Payloadsize) {
-        len = L4Payloadsize;
-    }
-
-    // Oppretter en L4 header
-    // Sjekk om vi kan unngå å allokere header
-    struct L4Header* header = malloc(L4Headersize);
-    if (header == NULL) {
-        perror("Failed to allocate memory");
-        return -1;
-    } 
-
-    // Fyller inn headeren
-
-    // Klienten sender alltid data, med mindre serveren har sendt en reset
-    if (l4->reset) {
-        header->type = L4_QUIT;
-    } else header->type = L4_DATA;
-
-    header->seqno = l4->current_seq_send; // Nåværende sekvensnr legges inn 
-    header->ackno = 0; // ack er ikke relevant her, settes alltid til 0
-    header->mbz = 0;
-
-    // Legger headeren på en buffer med datapakken
-    int packetsize = L4Headersize + len;
-    uint8_t* packet = malloc(packetsize);
-    if (packet == NULL) {
-        free(header);
-        perror("Error mallocing space for buffer");
-        return -1;
-    }
-
-    memcpy(packet, header, L4Headersize); // Legger først inn header
-    memcpy(packet+L4Headersize, data, len); // Så datapakken 
-    // her er len oppdatert dersom pakken var for stor, så den overskrider ikke strl
-
-    // Forsøker avsending av pakke maks 4 ganger
-    int result = L4_SEND_FAILED;
-    
-    for (int attempt = 1; attempt <= 4; attempt++) {
-        printf("SEND: Forsøk: %d\n", attempt);
-
-        // Sender pakken via L2
-        // Sender kun dersom vi er ferdige med forrige pakke
-        printf("SEND: Current seq før avsending av pakke: %d\n", l4->current_seq_send);
-        
-        int send = l2sap_sendto(l4->l2sap, packet, len+L4Headersize);
-        print_timestamp(); printf("SEND: Sendte pakke på forsøk %d: seq: %d\n", attempt, header->seqno);
-        printf("SEND: Pakkens størrelse: %d\n", len);
-        if (send != 1) {
-            perror("Error sending frame from L2");
-            continue;
-        }  
-        
-        // Resetter timeout hver runde 
-        l4->timeout.tv_sec = 1;
-        l4->timeout.tv_usec = 0;
-
-        // Oppretter et buffer der mottatt data skal legges
-        // og kaller på receive i L2 for å hente ut ack
-        // L2 legger L4-pakken på bufferet
-        uint8_t buffer[L2Framesize]; 
-        int received = l2sap_recvfrom_timeout(l4->l2sap, buffer, sizeof(buffer), &l4->timeout);
-        if (received < 0) printf("error i mottak fra l2\n");
-
-        // En pakke har ankommet
-        if (received > 0) {
-
-            // Henter ut header
-            struct L4Header* recv_header = (struct L4Header*)buffer;
-
-            // Mottar pakke for å sende ack
-            if (recv_header->type == L4_ACK) {
-                print_timestamp(); printf("SEND: mottok ack-pakke: ack: %d\n", recv_header->ackno);
-
-                // Serveren sender ack 1 for pakke 0. Vi gjør en xor på current_seq_send for
-                // å finne forventet ack, fordi serveren sender seq for "neste pakke"
-                // som en ack for å indikere at den er klar for en ny pakke
-                if (recv_header->ackno == (l4->current_seq_send ^ 1)) { 
-                    printf("SEND: ack ok: oppdaterer current_seq_send til %d\n", l4->current_seq_send^1);
-                    l4->current_seq_send ^= 1; // Oppdaterer seq med XOR (flipper 0/1)
-                    result = len;
-                    break;
-                } printf("SEND: feil ack mottatt\n");
-
-            } else if (recv_header->type == L4_RESET) { // Resetter
-                printf("MOTTOK RESET-pakke\n");
-                l4->reset = 1;
-                result = L4_QUIT;
-                break;
-
-            } else if (recv_header->type == L4_DATA) {
-                print_timestamp(); printf("MOTTOK DATA-pakke i sendto. Seq = %d\n", recv_header->seqno);
-
-                int sent_ack = send_ack(l4, recv_header); // Kaller på hjelpefunksjon
-                if (sent_ack < 0) {
-                    perror("Error sending ack");
-                    continue;
-                } 
-                l4->last_ack_sent = sent_ack;
-
-                // Sjekker om mottatt pakke er duplikat
-                // Hvis duplikat: ignorer, hvis ny pakke: legg i buffer
-                if (recv_header->seqno == l4->last_seq_received) { // Duplikat
-                    printf("SEND: mottok duplikat data-pakke, går videre\n");
-                    continue;
-                } 
-
-                // Ny pakke: legger på buffer og oppdaterer last seq recv
-                printf("SEND: mottok ny data-pakke. Legger på buffer\n");
-                if (!l4->has_pending_data) {
-                    l4->last_seq_received = recv_header->seqno;
-                    memcpy(l4->pending_data, buffer + L4Headersize, received - L4Headersize);
-                    l4->pending_len = received - L4Headersize;
-                    l4->has_pending_data = 1;
-                    continue;
-                }
-
-            }
-        } else {
-             // Ingen pakke, prøv på nytt
-            print_timestamp(); printf("SEND: timeout for å motta ack. Prøver igjen\n");
-
-        }
-    }
-
-    printf("SEND: frigjør minne og returnerer\n");
-
-    free(header); // Frigjøre minne
-    free(packet);
-    return result;
-}
 
 
 // Hjelpefunksjon for å sende en ack
@@ -426,9 +221,9 @@ int send_ack(L4SAP* l4, struct L4Header* recv_header) {
 
 
  // Ansvaret til denne funksjonen er å motta datapakker og sende acks
-int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
-{
+int l4sap_recv( L4SAP* l4, uint8_t* data, int len ) {
 
+    // Returnerer fra bufferet om det ligger noe data der
     if (l4->has_pending_data) {
         memcpy(data, l4->pending_data, l4->pending_len);
         l4->has_pending_data = 0;
@@ -436,17 +231,13 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
     }
 
     // Loopen går evig til det kommer en ny data-pakke
-    // Da må denne håndteres
     uint8_t buffer[L2Framesize];
-    int counter = 0;
 
     while(1) {
-        printf("RECV: While loop runde %d\n", counter);
-        counter++;
 
         int received = l2sap_recvfrom(l4->l2sap, buffer, sizeof(buffer));
         if (received < 0) {
-            perror("Error recieving frame from L2");
+            printf("Error recieving frame from L2\n");
             continue;
         }
 
@@ -455,11 +246,9 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
 
         // Hvis en reset-pakke blir sendt 
         if (recv_header->type == L4_RESET) {
-            printf("RECV: Mottok reset-pakke\n");
             l4->reset = 1;
             return L4_QUIT;
 
-        
         } else if (recv_header->type == L4_ACK) {
             printf("-------------------RECV: mottok ack\n");
             
@@ -515,13 +304,27 @@ int l4sap_recv( L4SAP* l4, uint8_t* data, int len )
  *  this function to ensure that the peer entity is also
  *  terminating correctly.
  */
-void l4sap_destroy( L4SAP* l4 )
-{
-    // Sender L4_RESET 3 ganger (bør kanskje være flere?)
-    for (int i = 0; i < 3; i++) {
-        // Må sende reset her, ikke data (som sendto vanligvis gjør)
-    }
-
-    l2sap_destroy(l4->l2sap);
-    free(l4);
-}
+ void l4sap_destroy(L4SAP* l4)
+ {
+    
+     // Oppretter headeren 
+     struct L4Header reset_header;
+     reset_header.type = L4_RESET;
+     reset_header.seqno = 0;
+     reset_header.ackno = 0;
+     reset_header.mbz = 0;
+ 
+     // Sender RESET mange ganger
+     for (int i = 0; i < 10; i++) {
+         int sendReset = l2sap_sendto(l4->l2sap, (uint8_t*)&reset_header, L4Headersize);
+         if (sendReset != 1) {
+             perror("Error sending reset message\n");
+         } else {
+             printf("Sent reset message to peer entity\n");
+         }
+     }
+ 
+     // Frigjør minnet
+     l2sap_destroy(l4->l2sap);
+     free(l4);
+ }
