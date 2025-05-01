@@ -203,9 +203,8 @@ int l4sap_send( L4SAP* l4, const uint8_t* data, int len )
                         l4->has_pending_data = 1;
                         continue;
                     }
-
                 }
-                
+        
             }
         }
 

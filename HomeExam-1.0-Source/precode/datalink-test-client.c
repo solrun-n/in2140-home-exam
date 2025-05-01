@@ -68,4 +68,3 @@ int main( int argc, char *argv[] )
 
     l2sap_destroy( l2 );
 }
-
