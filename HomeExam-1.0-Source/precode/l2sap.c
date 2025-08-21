@@ -7,33 +7,29 @@
 
 #include "l2sap.h"
 
-/* compute_checksum is a helper function for l2_sendto and
- * l2_recvfrom_timeout to compute the 1-byte checksum both
- * on sending and receiving and L2 frame.
- */
+ // compute_checksum beregner checksum av rammen ved en XOR-operasjon
 static uint8_t compute_checksum( const uint8_t* frame, int len ) {
-
     uint8_t checksum = 0;
     for (int i = 0; i < len; i++) {
-        checksum ^= frame[i]; // XOR-operasjon
+        checksum ^= frame[i]; 
     }
     return checksum;
 }
 
 
-L2SAP* l2sap_create( const char* server_ip, int server_port )
-{
+L2SAP* l2sap_create( const char* server_ip, int server_port ) {
+
     // socket() returnerer en file descriptor
     int socketFD = socket(AF_INET, SOCK_DGRAM, 0);
     if (socketFD < 0) {
-        perror("Couldn't create socket");
+        printf("Couldn't create socket\n");
         exit(EXIT_FAILURE);
     }
 
     // Initialiserer pointer til struct L2SAP
     L2SAP* l2sap = malloc(sizeof(struct L2SAP));
     if (l2sap == NULL) {
-        perror("Error mallocing L2SAP");
+        printf("Error mallocing L2SAP\n");
         exit(EXIT_FAILURE);
     }
 
@@ -45,7 +41,7 @@ L2SAP* l2sap_create( const char* server_ip, int server_port )
 
     int check = inet_pton(AF_INET, server_ip, &addr.sin_addr);
     if (check != 1) {
-        perror("Couldn't convert to network address structure");
+        printf("Couldn't convert to network address structure\n");
         free(l2sap);
         exit(EXIT_FAILURE);
     }
@@ -56,123 +52,68 @@ L2SAP* l2sap_create( const char* server_ip, int server_port )
     return l2sap;
 }
 
-void l2sap_destroy(L2SAP* client)
-{
+
+void l2sap_destroy(L2SAP* client) {
     // Lukker socket og frigjør ressursene
     close(client->socket);
     free(client);
 }
 
-/* l2sap_sendto sends data over UDP, using the given UDP socket
- * sock, to a remote UDP receiver that is identified by
- * peer_address.
- * The parameter data points to payload that L3 wants to send
- * to the remote L3 entity. This payload is len bytes long.
- * l2_sendto must add an L2 header in front of this payload.
- * When the payload length and the L2Header together exceed
- * the maximum frame size L2Framesize, l2_sendto fails.
- */
 
-// L2SAP: struct for sockets
-    // int: socket, struct sockaddr_in 
+int l2sap_sendto( L2SAP* client, const uint8_t* data, int len ) {
 
-// sockaddr_in - tar inn AF_INET, portnummer, IPv4-adresse
-
-// sendto tar inn: socket file descriptor fra client,
-// et buffer som skal skrives til (størrelse L2Payloadsize)
-
-
-
-int l2sap_sendto( L2SAP* client, const uint8_t* data, int len )
-{
-
-    // Hvis datamengden er for stor
-    // TODO: sjekk lengde vs payload
+    // Hvis datamengden er for stor (data + header overskrider rammestrl)
     if (len + L2Headersize > L2Framesize) {
-        perror("Data exceeds frame size");
+        printf("Data exceeds frame size\n");
         return -1;
     }
 
     int socketFD = client->socket;
     struct sockaddr_in reciever = client->peer_addr;
 
-    // Sjekk om vi kan unngå å allokere header
-    struct L2Header* header = malloc(L2Headersize);
-    if (header == NULL) {
-        perror("Failed to allocate memory");
-        return -1;
-    } 
-
-    header->dst_addr = reciever.sin_addr.s_addr;
-    header->len = htons((uint16_t)len + sizeof(L2Header));
-
-    // Setter foreløpig checksum til 0
-    header->checksum = 0;
-    header->mbz = 0;
+    // Allokerer header på stacken 
+    struct L2Header header;
+    header.dst_addr = reciever.sin_addr.s_addr;
+    header.len = htons((uint16_t)len + sizeof(L2Header));
+    header.checksum = 0; // Checksum = 0 før den kalkuleres
+    header.mbz = 0;
 
     // Oppretter en frame (buffer for header + data)
+    // Rammen er begrenset til størrelsen av data
     int framesize = L2Headersize + len;
+    printf("Framesize: %d\n", framesize);
     uint8_t* frame = malloc(framesize);
     if (frame == NULL) {
-        free(header);
-        perror("Error mallocing space for buffer");
+        printf("Error mallocing space for buffer\n");
         return -1;
     }
 
-    // Legger header og payload inn i buffer
-    // memcpy parametere: destination, source, n bytes
-    memcpy(frame, header, L2Headersize);
+    // Kopierer først header på rammen og deretter dataen
+    memcpy(frame, &header, L2Headersize);
     memcpy(frame+L2Headersize, data, len);
 
     // Kaller på hjelpefunksjon for å sette checksum
-    // Checksum beregnes ut fra hele rammen 
-    // men dette burde egentlig bare vært uregnet fra data?
+    // Beregnes ut fra hele rammen
     uint8_t cs = compute_checksum(frame, framesize);
-    header->checksum = cs;
+    header.checksum = cs;
 
-    memcpy(frame, header, L2Headersize);
+    // Oppdaterer headeren på frame etter checksum er beregnet
+    memcpy(frame, &header, L2Headersize);
 
     // Sender melding (sender med hele bufferet, inkludert header)
     sendto(socketFD, frame, framesize, 0, (const struct sockaddr*)&reciever, sizeof(reciever));
-
-    // Frigjør minne 
-    free(header);
     free(frame);
-
     return 1;
 }
 
 
-
-/* Convenience function. Calls l2sap_recvfrom_timeout with NULL timeout
- * to make it waits endlessly.
- */
-int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len )
-{
+// Kaller recieve med evig venting (ingen timeout)
+int l2sap_recvfrom( L2SAP* client, uint8_t* data, int len ) {
     return l2sap_recvfrom_timeout( client, data, len, NULL );
 }
 
-/* l2sap_recvfrom_timeout waits for data from a remote UDP sender, but
- * waits at most timeout seconds.
- * It is possible to pass NULL as timeout, in which case
- * the function waits forever.
- *
- * If a frame arrives in the meantime, it stores the remote
- * peer's address in peer_address and its size in peer_addr_sz.
- * After removing the header, the data of the frame is stored
- * in data, up to len bytes.
- *
- * If data is received, it returns the number of bytes.
- * If no data is reveid before the timeout, it returns L2_TIMEOUT,
- * which has the value 0.
- * It returns -1 in case of error.
- */
 
- // Her brukes select() for å overvåke endringer på sockets
-
-int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout )
-{
-
+int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeval* timeout ) {
 
     // Nullstiller variabel som skal holde på file descriptor
     // og henter riktig FD fra klienten
@@ -180,34 +121,27 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
     FD_ZERO(&fds);
     FD_SET(client->socket, &fds);
 
-    // select()
-    // nfds - FD-nummer som skal leses til
-    // readfds - venter på å lese til
-    // writefds - venter på å skrive til
-    // exceptfds - venter på feil ?
-    // Her skal vi bare lese 
+    // Bruker select() for å overvåke endringer på sockets
+    // Kun interessert i å lese, så setter writefds og exceptfds til null
     int check_activity = select(client->socket + 1, &fds, NULL, NULL, timeout);
     if (check_activity < 0) {
-        perror("An error occured in select");
+        printf("An error occured in select\n");
         return -1;
     } else if (check_activity == 0) {
-        perror("Timeout");
+        printf("Timeout waiting for data\n");
         return L2_TIMEOUT;
 
-    // Hvis data er sendt og mottatt innen timeout-tid:
+    // Hvis data er sendt og mottatt innen timeout:
     } else {
 
         // Lagrer adressestørrelse (for parameter)
         socklen_t address_length = sizeof(client->peer_addr);
 
-        // recvfrom() tar inn fd, databuffer, lengde, ant flagg (0),
-        // adressen til avsender og adressestørrelse
-        // Den returnerer en int som er rammestørrelsen (må være minimum L2Headersize)
+        // recvfrom() returnerer en int (rammestørrelsen)
         int recv_len = recvfrom(client->socket, data, len, 0, (struct sockaddr*) &client->peer_addr, &address_length);
 
-
         if (recv_len < L2Headersize) {
-            perror("Frame too short");
+            printf("Frame too short\n");
             return -1;
         }
 
@@ -218,7 +152,7 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
 
         uint8_t correct_cs = compute_checksum(data, recv_len);
         if (recv_cs != correct_cs) {
-            perror("Checksum not correct");
+            printf("Checksum not correct\n");
             return -1;
         }
 
@@ -230,4 +164,3 @@ int l2sap_recvfrom_timeout( L2SAP* client, uint8_t* data, int len, struct timeva
         return recv_len-L2Headersize;
     }
 }
-

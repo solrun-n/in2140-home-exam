@@ -133,6 +133,7 @@ L4SAP* l4sap_create( const char* server_ip, int server_port );
  *
  * DATA packets must be handled to achieve a full duplex operation.
  */
+ int l4sap_send_old( L4SAP* l4, const uint8_t* data, int len );
 int l4sap_send( L4SAP* l4, const uint8_t* data, int len );
 int send_ack(L4SAP* l4, struct L4Header* recv_header);
 

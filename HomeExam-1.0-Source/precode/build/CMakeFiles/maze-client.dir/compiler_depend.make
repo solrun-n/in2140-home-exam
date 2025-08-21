@@ -176,6 +176,11 @@ CMakeFiles/maze-client.dir/l4sap.c.o: /uio/hume/student-u54/solrunny/in2140/eksa
   /usr/include/bits/waitstatus.h \
   /usr/include/alloca.h \
   /usr/include/bits/stdlib-float.h \
+  /usr/include/sys/time.h \
+  /usr/include/time.h \
+  /usr/include/bits/time.h \
+  /usr/include/bits/types/struct_tm.h \
+  /usr/include/bits/types/struct_itimerspec.h \
   /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h \
   /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l2sap.h \
   /usr/include/inttypes.h \
@@ -420,8 +425,6 @@ CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u54/solrunny/in2140/eksam
 
 /usr/include/bits/posix1_lim.h:
 
-/usr/lib/gcc/x86_64-redhat-linux/11/include/syslimits.h:
-
 /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze-plot.c:
 
 /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.h:
@@ -431,6 +434,12 @@ CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u54/solrunny/in2140/eksam
 /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/maze.c:
 
 /uio/hume/student-u54/solrunny/in2140/eksamen/HomeExam-1.0-Source/precode/l4sap.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/11/include/syslimits.h:
+
+/usr/include/time.h:
+
+/usr/include/bits/types/struct_tm.h:
 
 /usr/include/bits/wchar.h:
 
@@ -451,6 +460,8 @@ CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u54/solrunny/in2140/eksam
 /usr/include/asm-generic/bitsperlong.h:
 
 /usr/include/asm/bitsperlong.h:
+
+/usr/include/bits/time.h:
 
 /usr/include/asm/posix_types_64.h:
 
@@ -518,6 +529,8 @@ CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u54/solrunny/in2140/eksam
 
 /usr/include/sys/cdefs.h:
 
+/usr/include/sys/time.h:
+
 /usr/include/bits/posix_opt.h:
 
 /usr/include/linux/posix_types.h:
@@ -573,6 +586,8 @@ CMakeFiles/maze-client.dir/maze.c.o: /uio/hume/student-u54/solrunny/in2140/eksam
 /usr/include/bits/types/__sigset_t.h:
 
 /usr/include/bits/waitstatus.h:
+
+/usr/include/bits/types/struct_itimerspec.h:
 
 /usr/include/linux/stddef.h:
 
